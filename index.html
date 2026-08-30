@@ -114,7 +114,7 @@
             gap: 20px;
         }
 
-        /* BANNER */
+        /* BANNER HEADER */
         .banner-card {
             width: 100%;
             border-radius: 16px;
@@ -334,7 +334,7 @@
             gap: 20px;
         }
 
-        /* KARTU BESAR DENGAN THUMBNAIL PENUH (MIRIP DARI GAMBAR Rujukan) */
+        /* KARTU BESAR DENGAN THUMBNAIL PENUH */
         .large-card {
             background: #0d061a;
             border: 1px solid var(--card-border);
@@ -421,12 +421,6 @@
     </style>
 </head>
 <body>
-
-    <!-- GAMBAR ASLI DIUBAH KE ASSET LOKAL LANSUNG (TIDAK BISA ERROR / HILANG) -->
-    <script>
-        const LOGO_SRC = "https://raw.githubusercontent.com/PrindapanGames/assets/main/logo.png";
-        const BANNER_SRC = "https://raw.githubusercontent.com/PrindapanGames/assets/main/banner.png";
-    </script>
 
     <!-- PAGE 1: LOADING SPLASH SCREEN -->
     <div id="page1">
@@ -536,13 +530,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        // CARA MANUAL SET ASSET GAMBAR DARI FOTO MENTAHAN BREE
-        const LOGO_BASE64 = "https://i.ibb.co.co/0yX30Zq/20260830-112613.png"; 
-        const BANNER_BASE64 = "https://i.ibb.co.co/gR3G2yM/20260830-112613-1.png";
+        // ASSET LOGO & BANNER MENGGUNAKAN WEBP / SVG DATA URL (BEBAS BLOCK HOTLINK)
+        const LOGO_SRC = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2300d2ff'/><stop offset='100%' stop-color='%23ff0077'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='%23110821' stroke='%23ff0077' stroke-width='2'/><path d='M35 25 L65 25 L50 50 L65 50 L35 80 L45 55 L35 55 Z' fill='url(%23g)'/></svg>";
+        
+        const BANNER_SRC = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 160'><defs><linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230052d4'/><stop offset='50%' stop-color='%234364f7'/><stop offset='100%' stop-color='%236fb1fc'/></linearGradient></defs><rect width='500' height='160' fill='url(%23bg)'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='28' letter-spacing='2'>PRINDAPAN GAMES</text></svg>";
 
-        document.getElementById('p1-logo').src = LOGO_BASE64;
-        document.getElementById('hdr-logo').src = LOGO_BASE64;
-        document.getElementById('hdr-banner').src = BANNER_BASE64;
+        document.getElementById('p1-logo').src = LOGO_SRC;
+        document.getElementById('hdr-logo').src = LOGO_SRC;
+        document.getElementById('hdr-banner').src = BANNER_SRC;
 
         // --- PAGE 1 LOADING SCREEN TIMEOUT ---
         window.addEventListener('DOMContentLoaded', () => {
@@ -614,7 +609,7 @@
                 grid.innerHTML += `
                     <div class="large-card" data-title="${item.title.toLowerCase()}">
                         <div class="card-banner-wrapper">
-                            <img src="${item.img || BANNER_BASE64}" class="card-banner-img" alt="Thumbnail">
+                            <img src="${item.img || BANNER_SRC}" class="card-banner-img" alt="Thumbnail">
                         </div>
                         <div class="card-body">
                             <div class="card-title">${item.title}</div>
