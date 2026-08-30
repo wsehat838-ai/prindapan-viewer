@@ -35,6 +35,85 @@
             overflow-x: hidden;
         }
 
+        /* LIVE BROADCAST POPUP STYLES */
+        .live-popup-container {
+            position: fixed;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 460px;
+            background: rgba(17, 8, 33, 0.95);
+            border: 2px solid var(--accent-pink);
+            border-radius: 16px;
+            padding: 14px 18px;
+            box-shadow: 0 10px 30px rgba(255, 0, 119, 0.4);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: top 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .live-popup-container.show {
+            top: 20px;
+        }
+
+        .live-popup-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 0, 119, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-pink);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            animation: pulse-glow 1.5s infinite;
+        }
+
+        .live-popup-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .live-popup-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-popup-msg {
+            font-size: 0.85rem;
+            color: #fff;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .live-popup-close {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 119, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 119, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 119, 0); }
+        }
+
         /* PAGE 1: SPLASH SCREEN */
         #page1 {
             position: fixed;
@@ -401,6 +480,20 @@
 </head>
 <body>
 
+    <!-- REALTIME LIVE BROADCAST POPUP -->
+    <div id="livePopup" class="live-popup-container">
+        <div class="live-popup-icon">
+            <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="live-popup-body">
+            <div class="live-popup-header">
+                <i class="fa-solid fa-circle" style="font-size: 0.5rem; color: var(--accent-pink);"></i> ADMIN STREAM BROADCAST
+            </div>
+            <div id="livePopupText" class="live-popup-msg">Pesan broadcast admin akan tampil di sini...</div>
+        </div>
+        <button class="live-popup-close" onclick="closeLivePopup()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
     <!-- PAGE 1: SPLASH SCREEN -->
     <div id="page1">
         <div class="avatar-loader">
@@ -552,6 +645,43 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        /* FIREBASE REALTIME BROADCAST LISTENER */
+        let popupTimeout;
+        let lastTimestamp = 0;
+
+        db.ref('liveBroadcast').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (!data || !data.text) return;
+
+            // Mencegah pop-up lama muncul kembali saat pertama kali halaman di-load
+            if (lastTimestamp === 0) {
+                lastTimestamp = data.timestamp || 1;
+                return;
+            }
+
+            if (data.timestamp && data.timestamp > lastTimestamp) {
+                lastTimestamp = data.timestamp;
+                showLivePopup(data.text);
+            }
+        });
+
+        function showLivePopup(text) {
+            const popup = document.getElementById('livePopup');
+            document.getElementById('livePopupText').innerText = text;
+            
+            popup.classList.add('show');
+
+            clearTimeout(popupTimeout);
+            popupTimeout = setTimeout(() => {
+                closeLivePopup();
+            }, 10000); // Pop-up otomatis hilang dalam 10 detik
+        }
+
+        function closeLivePopup() {
+            document.getElementById('livePopup').classList.remove('show');
+        }
+
+        /* FIREBASE LINK MANAGEMENT */
         db.ref('links').on('value', (snapshot) => {
             const grid = document.getElementById('cardGrid');
             grid.innerHTML = '';
