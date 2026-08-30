@@ -35,7 +35,7 @@
             overflow-x: hidden;
         }
 
-        /* --- PAGE 1: SPLASH SCREEN / LOADING --- */
+        /* PAGE 1: SPLASH SCREEN */
         #page1 {
             position: fixed;
             top: 0;
@@ -104,7 +104,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* --- CONTAINER WRAPPER --- */
+        /* CONTAINER WRAPPER */
         .app-container {
             width: 100%;
             max-width: 500px;
@@ -159,7 +159,7 @@
             color: #fff;
         }
 
-        /* --- PAGES --- */
+        /* PAGES */
         .page {
             display: none;
             flex-direction: column;
@@ -195,7 +195,7 @@
             color: var(--accent-pink);
         }
 
-        /* TASK LIST SYSTEM (PAGE 2) */
+        /* TASK LIST */
         .task-list {
             display: flex;
             flex-direction: column;
@@ -213,11 +213,6 @@
             text-decoration: none;
             color: #fff;
             transition: all 0.3s ease;
-        }
-
-        .task-item:hover {
-            border-color: var(--accent-purple);
-            transform: translateY(-2deg);
         }
 
         .task-info {
@@ -298,7 +293,7 @@
             box-shadow: 0 0 20px rgba(255, 0, 119, 0.5);
         }
 
-        /* PAGE 3: LARGE THUMBNAIL CONTENT CARDS */
+        /* PAGE 3 CONTENT CARDS */
         .search-box {
             position: relative;
             margin-bottom: 20px;
@@ -313,11 +308,6 @@
             color: #fff;
             font-size: 0.85rem;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--accent-pink);
         }
 
         .search-box i {
@@ -334,7 +324,6 @@
             gap: 20px;
         }
 
-        /* KARTU BESAR DENGAN THUMBNAIL PENUH */
         .large-card {
             background: #0d061a;
             border: 1px solid var(--card-border);
@@ -342,12 +331,6 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .large-card:hover {
-            border-color: var(--accent-pink);
-            transform: translateY(-3deg);
         }
 
         .card-banner-wrapper {
@@ -374,7 +357,6 @@
             font-size: 1rem;
             font-weight: 700;
             color: #fff;
-            line-height: 1.4;
         }
 
         .btn-action {
@@ -388,12 +370,9 @@
             font-family: 'Orbitron', sans-serif;
             font-weight: 800;
             font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(255, 0, 119, 0.3);
             display: block;
         }
 
-        /* FOOTER SOCIALS */
         .footer-socials {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -422,11 +401,11 @@
 </head>
 <body>
 
-    <!-- PAGE 1: LOADING SPLASH SCREEN -->
+    <!-- PAGE 1: SPLASH SCREEN -->
     <div id="page1">
         <div class="avatar-loader">
             <div class="ring-spin"></div>
-            <img id="p1-logo" class="avatar-img" alt="Prindapan Logo">
+            <img id="p1-logo" class="avatar-img" alt="Logo">
         </div>
         <div class="brand-name">PRINDAPAN GAMES</div>
         <div class="loading-text">Memuat Sistem Vault...</div>
@@ -435,7 +414,7 @@
     <!-- MAIN CONTAINER -->
     <div class="app-container">
 
-        <!-- HEADER BANNER (PAGE 2 & PAGE 3) -->
+        <!-- HEADER BANNER -->
         <div class="banner-card">
             <img id="hdr-banner" class="banner-img" alt="Banner">
             <div class="banner-overlay">
@@ -444,7 +423,7 @@
             </div>
         </div>
 
-        <!-- PAGE 2: TASK SYSTEM PAGE -->
+        <!-- PAGE 2: TASK SYSTEM -->
         <div id="page2" class="page active">
             <div class="section-box">
                 <div class="section-title">
@@ -452,7 +431,6 @@
                 </div>
                 
                 <div class="task-list">
-                    <!-- Task 1 -->
                     <a href="https://youtube.com/@prindapan_ori?si=xoFVHlqqjgSZEkbu" target="_blank" class="task-item" onclick="completeTask(1)">
                         <div class="task-info">
                             <div class="task-icon"><i class="fa-brands fa-youtube"></i></div>
@@ -461,10 +439,9 @@
                                 <p>Subscribe channel Prindapan Games</p>
                             </div>
                         </div>
-                        <div class="task-status" id="status-1"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-status"><i class="fa-solid fa-check"></i></div>
                     </a>
 
-                    <!-- Task 2 -->
                     <a href="https://youtu.be/2Xhiu_JNAUs?si=uYE6VS120yJ24oNE" target="_blank" class="task-item" onclick="completeTask(2)">
                         <div class="task-info">
                             <div class="task-icon"><i class="fa-solid fa-thumbs-up"></i></div>
@@ -473,10 +450,9 @@
                                 <p>Sukai & beri komentar di video terbaru</p>
                             </div>
                         </div>
-                        <div class="task-status" id="status-2"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-status"><i class="fa-solid fa-check"></i></div>
                     </a>
 
-                    <!-- Task 3 -->
                     <a href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="task-item" onclick="completeTask(3)">
                         <div class="task-info">
                             <div class="task-icon"><i class="fa-brands fa-whatsapp"></i></div>
@@ -485,35 +461,31 @@
                                 <p>Gabung grup WhatsApp Prindapan</p>
                             </div>
                         </div>
-                        <div class="task-status" id="status-3"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-status"><i class="fa-solid fa-check"></i></div>
                     </a>
                 </div>
             </div>
 
-            <!-- UNLOCK BUTTON -->
             <button id="btnClaim" class="btn-claim" onclick="goToPage3()">
                 <i class="fa-solid fa-lock"></i> UNLOCK LINK CONTENT
             </button>
         </div>
 
-        <!-- PAGE 3: VAULT LINK CONTENT PAGE -->
+        <!-- PAGE 3: VAULT CONTENT -->
         <div id="page3" class="page">
             <div class="section-box">
                 <div class="section-title">
                     <i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT
                 </div>
 
-                <!-- Custom Search Bar -->
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari apa? Ketik...">
                 </div>
 
-                <!-- Realtime Links (Large Cards with Big Thumbnails) -->
                 <div class="link-grid" id="cardGrid"></div>
             </div>
 
-            <!-- Footer Quick Links -->
             <div class="footer-socials">
                 <a href="https://youtube.com/@prindapan_ori" target="_blank" class="btn-foot-social yt">
                     <i class="fa-brands fa-youtube"></i> YouTube
@@ -526,42 +498,30 @@
 
     </div>
 
-    <!-- FIREBASE & SCRIPT LOGIC -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        // ASSET LOGO & BANNER MENGGUNAKAN WEBP / SVG DATA URL (BEBAS BLOCK HOTLINK)
-        const LOGO_SRC = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2300d2ff'/><stop offset='100%' stop-color='%23ff0077'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='%23110821' stroke='%23ff0077' stroke-width='2'/><path d='M35 25 L65 25 L50 50 L65 50 L35 80 L45 55 L35 55 Z' fill='url(%23g)'/></svg>";
-        
-        const BANNER_SRC = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 160'><defs><linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230052d4'/><stop offset='50%' stop-color='%234364f7'/><stop offset='100%' stop-color='%236fb1fc'/></linearGradient></defs><rect width='500' height='160' fill='url(%23bg)'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='28' letter-spacing='2'>PRINDAPAN GAMES</text></svg>";
+        // DIRECT LINK GAMBAR DARI IMGBB
+        const LOGO_SRC = "https://i.ibb.co.com/fdgHysSd/file-1191.png";
+        const BANNER_SRC = "https://i.ibb.co.com/j9622TXV/file-1192.png";
 
         document.getElementById('p1-logo').src = LOGO_SRC;
         document.getElementById('hdr-logo').src = LOGO_SRC;
         document.getElementById('hdr-banner').src = BANNER_SRC;
 
-        // --- PAGE 1 LOADING SCREEN TIMEOUT ---
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('page1');
                 splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                }, 500);
+                setTimeout(() => splash.style.display = 'none', 500);
             }, 2500);
         });
 
-        // --- TASK SYSTEM LOGIC (PAGE 2) ---
         let completedTasks = { 1: false, 2: false, 3: false };
 
         function completeTask(taskNum) {
             completedTasks[taskNum] = true;
-            const taskItem = document.querySelectorAll('.task-item')[taskNum - 1];
-            taskItem.classList.add('completed');
-            
-            checkAllTasks();
-        }
-
-        function checkAllTasks() {
+            document.querySelectorAll('.task-item')[taskNum - 1].classList.add('completed');
             if (completedTasks[1] && completedTasks[2] && completedTasks[3]) {
                 const btn = document.getElementById('btnClaim');
                 btn.classList.add('ready');
@@ -579,7 +539,6 @@
             }
         }
 
-        // --- FIREBASE REALTIME DATABASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyDSftuyANybsSrzM7M8mvLJrd8-HhEn1BU",
             authDomain: "prindapan-games.firebaseapp.com",
@@ -593,7 +552,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // RENDER DATA DARI FIREBASE KE PAGE 3 (VERSI THUMBNAIL BESAR)
         db.ref('links').on('value', (snapshot) => {
             const grid = document.getElementById('cardGrid');
             grid.innerHTML = '';
@@ -620,11 +578,9 @@
             }
         });
 
-        // SEARCH FILTER LOGIC
         function filterCards() {
             const input = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.large-card');
-            cards.forEach(card => {
+            document.querySelectorAll('.large-card').forEach(card => {
                 const title = card.getAttribute('data-title');
                 card.style.display = title.includes(input) ? 'flex' : 'none';
             });
