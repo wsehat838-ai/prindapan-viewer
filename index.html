@@ -22,6 +22,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
+            user-select: none;
         }
 
         body {
@@ -32,73 +33,73 @@
             flex-direction: column;
             align-items: center;
             padding: 15px;
-            position: relative;
+            overflow-x: hidden;
         }
 
-        /* POPUP FLOATING STREAM (TOP SLIDE) */
-        .chat-popup-container {
+        /* LOADING SCREEN */
+        #loading-screen {
             position: fixed;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 420px;
-            background: #130a24;
-            border: 1px solid var(--accent-blue);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.35);
-            z-index: 99999;
-            overflow: hidden;
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .chat-popup-container.show {
-            top: 20px;
-        }
-
-        .chat-popup-content {
-            padding: 12px 15px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark);
+            z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            transition: opacity 0.5s ease;
         }
 
-        .chat-popup-header {
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--card-border);
+            border-top: 5px solid var(--accent-pink);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* BROADCAST POPUP */
+        #live-broadcast {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            width: 90%;
+            max-width: 440px;
+            background: linear-gradient(135deg, rgba(255, 0, 119, 0.95), rgba(138, 43, 226, 0.95));
+            border: 1px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 119, 0.6);
+            border-radius: 12px;
+            padding: 12px 16px;
+            z-index: 999;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: var(--accent-blue);
-            letter-spacing: 1px;
+            gap: 12px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .chat-popup-body {
-            font-size: 0.85rem;
+        #live-broadcast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .broadcast-icon {
+            font-size: 1.5rem;
+            color: #fff;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+        .broadcast-text {
+            font-size: 0.8rem;
             color: #fff;
             font-weight: 600;
-            word-break: break-word;
-            line-height: 1.4;
         }
 
-        .chat-progress-bar {
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-blue));
-            width: 100%;
-            transform-origin: left;
-        }
-
-        @keyframes shrinkBar {
-            from { transform: scaleX(1); }
-            to { transform: scaleX(0); }
-        }
-
-        .chat-progress-bar.run-timer {
-            animation: shrinkBar 10s linear forwards;
-        }
-
-        /* BANNER HEADER */
+        /* MAIN CONTAINER */
         .app-container {
             width: 100%;
             max-width: 480px;
@@ -107,54 +108,64 @@
             gap: 15px;
         }
 
-        .hero-banner {
-            position: relative;
+        /* BANNER */
+        .banner-card {
             width: 100%;
-            height: 160px;
+            height: 140px;
+            background: linear-gradient(135deg, #130a24 0%, #261547 50%, #ff0077 100%);
             border-radius: 16px;
-            overflow: hidden;
             border: 1px solid var(--card-border);
             display: flex;
-            align-items: flex-end;
-            padding: 15px;
-            background: url('https://i.ibb.co/L5X8P0M/banner.jpg') center/cover no-repeat;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(9, 5, 20, 0.2) 0%, rgba(9, 5, 20, 0.9) 100%);
-        }
-
-        .hero-content {
+            align-items: center;
+            padding: 20px;
+            gap: 15px;
             position: relative;
-            z-index: 2;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .banner-logo {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue));
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .hero-logo {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-pink);
-        }
-
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 900;
-            letter-spacing: 1px;
+            justify-content: center;
+            font-size: 1.8rem;
             color: #fff;
-            text-shadow: 0 0 10px rgba(0,210,255,0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 119, 0.5);
+            border: 2px solid #fff;
+            flex-shrink: 0;
         }
 
-        /* MAIN CARD VAULT */
+        .banner-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 2;
+        }
+
+        .banner-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+        }
+
+        .banner-sub {
+            font-size: 0.7rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* CARD COMMON */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 16px;
             display: flex;
             flex-direction: column;
@@ -163,7 +174,7 @@
 
         .card-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: #fff;
             display: flex;
@@ -178,18 +189,9 @@
             width: 100%;
         }
 
-        .search-box i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-gray);
-            font-size: 0.9rem;
-        }
-
-        .search-input {
+        .search-box input {
             width: 100%;
-            padding: 12px 12px 12px 40px;
+            padding: 10px 12px 10px 38px;
             background: #090412;
             border: 1px solid var(--card-border);
             border-radius: 10px;
@@ -198,179 +200,197 @@
             outline: none;
         }
 
-        .search-input:focus { border-color: var(--accent-pink); }
-
-        .link-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-height: 80px;
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            font-size: 0.85rem;
         }
 
-        .link-item {
+        .data-item {
             background: #090412;
             border: 1px solid var(--card-border);
             border-radius: 10px;
             padding: 12px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .link-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            overflow: hidden;
-        }
-
-        .link-thumb {
-            width: 40px;
-            height: 40px;
+        .data-img {
+            width: 45px;
+            height: 45px;
             border-radius: 8px;
             object-fit: cover;
-            border: 1px solid var(--card-border);
+            background: #1a0f30;
         }
 
-        .link-text {
+        .data-info {
             display: flex;
             flex-direction: column;
+            gap: 3px;
+            flex: 1;
             overflow: hidden;
         }
 
-        .link-text strong {
-            font-size: 0.85rem;
-            color: #fff;
+        .data-info strong {
+            font-size: 0.8rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .btn-get {
+        .btn-dl {
             background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
             color: #fff;
-            text-decoration: none;
             padding: 8px 14px;
             border-radius: 8px;
+            text-decoration: none;
             font-size: 0.75rem;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
             font-family: 'Orbitron', sans-serif;
-            white-space: nowrap;
         }
 
-        /* GRID TOMBOL SOSMED & CONTACT */
-        .nav-links {
+        /* ACTION BUTTONS */
+        .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
-        .btn-socmed {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .btn-action {
             padding: 12px;
-            background: var(--card-bg);
+            border-radius: 10px;
+            background: #090412;
             border: 1px solid var(--card-border);
-            border-radius: 12px;
             color: #fff;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        .btn-yt { color: #ff0000; border-color: rgba(255, 0, 0, 0.3); }
-        .btn-wa { color: #25d366; border-color: rgba(37, 211, 102, 0.3); }
-
-        /* TOMBOL HUBUNGI ADMIN (TENGAH BAWAH) */
-        .btn-admin {
-            grid-column: span 2;
-            background: linear-gradient(45deg, rgba(0, 210, 255, 0.15), rgba(138, 43, 226, 0.15));
-            border: 1px solid var(--accent-blue);
-            color: var(--accent-blue);
-            padding: 12px;
-            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 800;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .empty-state {
-            text-align: center;
-            color: var(--text-gray);
-            font-size: 0.8rem;
-            padding: 20px 0;
+        .btn-action.yt { border-color: #ff0000; color: #ff0000; }
+        .btn-action.wa { border-color: #25d366; color: #25d366; }
+        .btn-action.full { grid-column: span 2; border-color: var(--accent-blue); color: var(--accent-blue); }
+
+        /* TASK SECTION */
+        .task-item {
+            background: #090412;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .task-info strong { font-size: 0.8rem; }
+        .task-info span { font-size: 0.7rem; color: var(--text-gray); }
+
+        .btn-task {
+            background: var(--accent-blue);
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- POPUP LIVE CHAT FLOATING -->
-    <div id="liveChatPopup" class="chat-popup-container">
-        <div class="chat-popup-content">
-            <div class="chat-popup-header">
-                <i class="fa-solid fa-bullhorn"></i>
-                <span>PESAN ADMIN</span>
-            </div>
-            <div id="chatPopupText" class="chat-popup-body">-</div>
-        </div>
-        <div id="chatProgressBar" class="chat-progress-bar"></div>
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <div style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--accent-pink);">PRINDAPAN VAULT...</div>
+    </div>
+
+    <!-- POPUP LIVE BROADCAST -->
+    <div id="live-broadcast">
+        <i class="fa-solid fa-bullhorn broadcast-icon"></i>
+        <div class="broadcast-text" id="broadcastText">Pesan broadcast dari Admin akan tampil di sini!</div>
     </div>
 
     <div class="app-container">
 
-        <!-- BANNER HERO -->
-        <div class="hero-banner">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <img src="https://i.ibb.co/3kW22p1/logo.jpg" class="hero-logo" alt="Logo" onerror="this.src='https://via.placeholder.com/45'">
-                <div class="hero-title">PRINDAPAN VAULT HUB</div>
+        <!-- BANNER & LOGO INTERNAL (ANTI BROKEN) -->
+        <div class="banner-card">
+            <div class="banner-logo">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div class="banner-info">
+                <div class="banner-title">PRINDAPAN VAULT</div>
+                <div class="banner-sub"><i class="fa-solid fa-circle" style="color:#25d366; font-size: 0.6rem;"></i> HUB FILE & SCRIPT OFFICIAL</div>
             </div>
         </div>
 
-        <!-- SEARCH & LINK VAULT -->
+        <!-- DOWNLOAD VAULT CARD -->
         <div class="card">
-            <div class="card-title">
-                <i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT
-            </div>
+            <div class="card-title"><i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT</div>
             
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="Cari apa? Ketik..." oninput="filterLinks()">
+                <input type="text" id="searchInput" placeholder="Cari apa? Ketik..." onkeyup="filterLinks()">
             </div>
 
-            <div id="linkList" class="link-list">
-                <div class="empty-state">Memuat data...</div>
+            <div id="linkList" style="display: flex; flex-direction: column; gap: 8px;">
+                <p style="font-size:0.75rem; color: var(--text-gray); text-align:center;">Memuat data...</p>
             </div>
         </div>
 
-        <!-- NAV LINKS & CONTACT ADMIN -->
-        <div class="nav-links">
-            <a href="https://youtube.com" target="_blank" class="btn-socmed btn-yt">
+        <!-- MENU TASK / TUGAS -->
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> TASK REWARD & TUGAS</div>
+            <div class="task-item">
+                <div class="task-info">
+                    <strong>Subscribe Channel YouTube</strong>
+                    <span>Dapatkan akses ke fitur khusus</span>
+                </div>
+                <a href="https://youtube.com" target="_blank" class="btn-task">SELESAIKAN</a>
+            </div>
+            <div class="task-item">
+                <div class="task-info">
+                    <strong>Join Group Whatsapp</strong>
+                    <span>Gabung komunitas Prindapan</span>
+                </div>
+                <a href="https://chat.whatsapp.com" target="_blank" class="btn-task">JOIN NOW</a>
+            </div>
+        </div>
+
+        <!-- SHORTCUT LINK BUTTONS -->
+        <div class="btn-grid">
+            <a href="https://youtube.com" target="_blank" class="btn-action yt">
                 <i class="fa-brands fa-youtube"></i> YouTube
             </a>
-            <a href="https://whatsapp.com" target="_blank" class="btn-socmed btn-wa">
+            <a href="https://chat.whatsapp.com" target="_blank" class="btn-action wa">
                 <i class="fa-brands fa-whatsapp"></i> Komunitas WA
             </a>
-
-            <!-- TOMBOL HUBUNGI ADMIN LANGSUNG -->
-            <a href="https://wa.me/6283139352624?text=Halo%20Admin%20Prindapan,%20saya%20mau%20tanya..." target="_blank" class="btn-admin">
+            <a href="https://wa.me/62800000000" target="_blank" class="btn-action full">
                 <i class="fa-solid fa-headset"></i> HUBUNGI ADMIN
             </a>
         </div>
 
     </div>
 
+    <!-- FIREBASE DB -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
@@ -387,36 +407,49 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let allLinks = {};
+        let allLinks = [];
 
-        // REALTIME LISTENER DAFTAR LINK
+        // HIDE LOADING SCREEN
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 800);
+        });
+
+        // LISTEN TO FIREBASE LINKS
         db.ref('links').on('value', (snapshot) => {
-            allLinks = snapshot.val() || {};
+            const data = snapshot.val();
+            allLinks = [];
+            if (data) {
+                for (let id in data) {
+                    allLinks.push(data[id]);
+                }
+            }
             renderLinks(allLinks);
         });
 
-        function renderLinks(data) {
-            const listEl = document.getElementById('linkList');
-            listEl.innerHTML = '';
+        function renderLinks(links) {
+            const list = document.getElementById('linkList');
+            list.innerHTML = '';
 
-            const keys = Object.keys(data);
-            if (keys.length === 0) {
-                listEl.innerHTML = '<div class="empty-state">Belum ada link yang ditambahkan.</div>';
+            if (links.length === 0) {
+                list.innerHTML = '<p style="font-size:0.75rem; color: var(--text-gray); text-align:center;">Belum ada link yang ditambahkan.</p>';
                 return;
             }
 
-            keys.forEach(key => {
-                const item = data[key];
-                const imgSrc = item.img ? item.img : 'https://via.placeholder.com/40';
-                listEl.innerHTML += `
-                    <div class="link-item">
-                        <div class="link-info">
-                            <img src="${imgSrc}" class="link-thumb" alt="Thumb" onerror="this.src='https://via.placeholder.com/40'">
-                            <div class="link-text">
-                                <strong>${item.title}</strong>
-                            </div>
+            links.forEach(item => {
+                const defaultImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23ff0077'><path d='M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z'/></svg>";
+                const imgSrc = item.img && item.img.trim() !== "" ? item.img : defaultImg;
+
+                list.innerHTML += `
+                    <div class="data-item">
+                        <img class="data-img" src="${imgSrc}" onerror="this.src='${defaultImg}'" alt="Thumb">
+                        <div class="data-info">
+                            <strong>${item.title}</strong>
                         </div>
-                        <a href="${item.url}" target="_blank" class="btn-get">UNDUH</a>
+                        <a href="${item.url}" target="_blank" class="btn-dl"><i class="fa-solid fa-download"></i> GET</a>
                     </div>
                 `;
             });
@@ -424,46 +457,25 @@
 
         function filterLinks() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = {};
-
-            for (let key in allLinks) {
-                if (allLinks[key].title.toLowerCase().includes(query)) {
-                    filtered[key] = allLinks[key];
-                }
-            }
+            const filtered = allLinks.filter(l => l.title.toLowerCase().includes(query));
             renderLinks(filtered);
         }
 
-        // REALTIME LISTENER POPUP BROADCAST (DURASI 10 DETIK)
-        let popupTimeout;
+        // LISTEN TO REALTIME BROADCAST LIVE CHAT FROM ADMIN
+        let lastBroadcastTime = 0;
         db.ref('liveBroadcast').on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data && data.text) {
-                triggerLiveChatPopup(data.text);
+            if (data && data.timestamp > lastBroadcastTime) {
+                lastBroadcastTime = data.timestamp;
+                const broadcastEl = document.getElementById('live-broadcast');
+                document.getElementById('broadcastText').innerText = data.text;
+                
+                broadcastEl.classList.add('show');
+                setTimeout(() => {
+                    broadcastEl.classList.remove('show');
+                }, 10000); // Tampil selama 10 Detik
             }
         });
-
-        function triggerLiveChatPopup(text) {
-            const popup = document.getElementById('liveChatPopup');
-            const textEl = document.getElementById('chatPopupText');
-            const progressBar = document.getElementById('chatProgressBar');
-
-            clearTimeout(popupTimeout);
-            popup.classList.remove('show');
-            progressBar.classList.remove('run-timer');
-
-            void progressBar.offsetWidth;
-
-            textEl.innerText = text;
-
-            popup.classList.add('show');
-            progressBar.classList.add('run-timer');
-
-            popupTimeout = setTimeout(() => {
-                popup.classList.remove('show');
-                progressBar.classList.remove('run-timer');
-            }, 10000);
-        }
     </script>
 </body>
 </html>
