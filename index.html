@@ -476,6 +476,31 @@
 
         .btn-foot-social.yt { color: #ff0055; }
         .btn-foot-social.wa { color: #25d366; }
+
+        /* BUTTON HUBUNGI ADMIN */
+        .btn-admin-contact {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            border: 1px solid rgba(37, 211, 102, 0.4);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin-contact:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -587,6 +612,11 @@
                     <i class="fa-brands fa-whatsapp"></i> Komunitas WA
                 </a>
             </div>
+
+            <!-- TOMBOL HUBUNGI ADMIN -->
+            <a href="https://wa.me/6283139352624?text=Halo%20Admin%20Prindapan,%20saya%20mau%20tanya%20" target="_blank" class="btn-admin-contact">
+                <i class="fa-solid fa-headset"></i> Hubungi Admin
+            </a>
         </div>
 
     </div>
@@ -653,7 +683,6 @@
             const data = snapshot.val();
             if (!data || !data.text) return;
 
-            // Mencegah pop-up lama muncul kembali saat pertama kali halaman di-load
             if (lastTimestamp === 0) {
                 lastTimestamp = data.timestamp || 1;
                 return;
@@ -674,7 +703,7 @@
             clearTimeout(popupTimeout);
             popupTimeout = setTimeout(() => {
                 closeLivePopup();
-            }, 10000); // Pop-up otomatis hilang dalam 10 detik
+            }, 10000);
         }
 
         function closeLivePopup() {
