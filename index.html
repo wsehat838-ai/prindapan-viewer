@@ -15,6 +15,7 @@
             --accent-purple: #8a2be2;
             --accent-blue: #00d2ff;
             --text-gray: #a39bb8;
+            --text-color: #ffffff;
         }
 
         *:not(input):not(textarea) {
@@ -35,12 +36,13 @@
 
         body {
             background-color: var(--bg-dark);
-            color: #fff;
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         /* LIVE BROADCAST POPUP */
@@ -84,6 +86,42 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 0, 119, 0); }
         }
 
+        /* SERVER CLOSED SCREEN */
+        #closedScreen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #07040d;
+            z-index: 99999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        #closedScreen i { font-size: 4rem; color: var(--accent-pink); margin-bottom: 20px; }
+        #closedScreen h2 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #fff; margin-bottom: 10px; }
+        #closedScreen p { font-size: 0.9rem; color: var(--text-gray); max-width: 320px; }
+
+        /* EMOJI RAIN CONTAINER */
+        #emojiRainContainer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .falling-emoji {
+            position: absolute;
+            top: -50px;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
         /* PAGE 1: SPLASH SCREEN */
         #page1 {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -111,11 +149,11 @@
         .page { display: none; flex-direction: column; gap: 15px; width: 100%; }
         .page.active { display: flex; }
 
-        .section-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .section-title { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .section-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background-color 0.4s ease; }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 800; color: var(--text-color); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
         .section-title i { color: var(--accent-pink); }
 
-        /* NAV TABS (ROLE, GS STYLE NAV BAR) */
+        /* NAV TABS */
         .nav-tabs { display: flex; background: #0d061a; border-radius: 14px; padding: 5px; border: 1px solid var(--card-border); gap: 5px; margin-bottom: 5px; }
         .tab-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-gray); font-size: 0.75rem; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.3s ease; }
         .tab-btn i { font-size: 1rem; }
@@ -192,6 +230,16 @@
         </div>
         <button class="live-popup-close" onclick="closeLivePopup()"><i class="fa-solid fa-xmark"></i></button>
     </div>
+
+    <!-- SERVER CLOSED OVERLAY -->
+    <div id="closedScreen">
+        <i class="fa-solid fa-lock"></i>
+        <h2>SERVER TUTUP</h2>
+        <p>Server sedang ditutup oleh Admin. Kembali lagi tahun depan!</p>
+    </div>
+
+    <!-- HOSTER FOR EMOJI RAIN -->
+    <div id="emojiRainContainer"></div>
 
     <!-- PAGE 1: SPLASH SCREEN -->
     <div id="page1">
@@ -410,6 +458,70 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // 1. CONTROL: SITE STATUS (OPEN / CLOSE)
+        db.ref('siteStatus').on('value', (snapshot) => {
+            const status = snapshot.val();
+            const closedScreen = document.getElementById('closedScreen');
+            if (status === 'CLOSED') {
+                closedScreen.style.display = 'flex';
+            } else {
+                closedScreen.style.display = 'none';
+            }
+        });
+
+        // 2. CONTROL: THEME & CUSTOM BACKGROUND COLOR
+        db.ref('siteTheme').on('value', (snapshot) => {
+            const theme = snapshot.val();
+            if (!theme) return;
+
+            if (theme.mode === 'light') {
+                document.documentElement.style.setProperty('--bg-dark', '#f4f4f9');
+                document.documentElement.style.setProperty('--card-bg', '#ffffff');
+                document.documentElement.style.setProperty('--card-border', '#e0e0e8');
+                document.documentElement.style.setProperty('--text-color', '#1a1a1a');
+            } else if (theme.mode === 'dark') {
+                document.documentElement.style.setProperty('--bg-dark', '#07040d');
+                document.documentElement.style.setProperty('--card-bg', '#110821');
+                document.documentElement.style.setProperty('--card-border', '#22123f');
+                document.documentElement.style.setProperty('--text-color', '#ffffff');
+            }
+
+            if (theme.customBg) {
+                document.documentElement.style.setProperty('--bg-dark', theme.customBg);
+            }
+        });
+
+        // 3. CONTROL: SPAM HUJAN EMOJI HALLOWEEN
+        let lastEmojiTimestamp = 0;
+        db.ref('emojiSpam').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+            if (lastEmojiTimestamp === 0) { lastEmojiTimestamp = data.timestamp || 1; return; }
+            if (data.timestamp && data.timestamp > lastEmojiTimestamp) {
+                lastEmojiTimestamp = data.timestamp;
+                triggerEmojiRain();
+            }
+        });
+
+        function triggerEmojiRain() {
+            const emojis = ['🎃', '👻', '🦇', '🕷️', '💀', '🍬', '🧙‍♀️', '🕸️'];
+            const container = document.getElementById('emojiRainContainer');
+            
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.classList.add('falling-emoji');
+                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    container.appendChild(el);
+
+                    setTimeout(() => el.remove(), 4000);
+                }, i * 80);
+            }
+        }
+
         // REALTIME BROADCAST LISTENER
         let popupTimeout, lastTimestamp = 0;
         db.ref('liveBroadcast').on('value', (snapshot) => {
@@ -557,4 +669,4 @@
         }
     </script>
 </body>
-            </html>
+</html>
