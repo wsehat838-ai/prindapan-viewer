@@ -3,50 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRINDAPAN GAMES</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>PRINDAPAN GAMES - Link Vault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg-dark: #0a0512; --card-bg: #130a21; --red-neon: #ff0055; --purple-neon: #9d00ff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-dark); color: #fff; padding-bottom: 50px; }
-        header { text-align: center; padding: 30px 0; background: rgba(19, 10, 33, 0.9); border-bottom: 2px solid var(--purple-neon); }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 800; background: linear-gradient(45deg, var(--red-neon), var(--purple-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 15px rgba(255, 0, 85, 0.6); }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        .search-box { position: relative; margin-bottom: 30px; }
-        .search-box input { width: 100%; padding: 15px 20px 15px 50px; background: var(--card-bg); border: 2px solid var(--purple-neon); border-radius: 10px; color: #fff; font-size: 1rem; outline: none; box-shadow: 0 0 10px rgba(157, 0, 255, 0.3); }
-        .search-box i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--purple-neon); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(157, 0, 255, 0.3); border-radius: 12px; overflow: hidden; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--red-neon); box-shadow: 0 0 15px rgba(255, 0, 85, 0.4); }
-        .card img { width: 100%; height: 130px; object-fit: cover; }
-        .card-body { padding: 15px; text-align: center; }
-        .card-title { font-weight: 600; margin-bottom: 10px; font-size: 1rem; }
-        .btn-get { display: block; background: linear-gradient(45deg, var(--red-neon), var(--purple-neon)); color: #fff; text-decoration: none; padding: 8px 0; border-radius: 6px; font-weight: bold; }
-        .socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 8px; color: #fff; text-decoration: none; font-weight: bold; }
-        .yt { background: #ff0000; } .discord { background: var(--purple-neon); } .btn-extra { background: #1f1435; border: 1px solid var(--purple-neon); }
+        :root {
+            --bg-dark: #07040d;
+            --card-bg: #110821;
+            --card-border: #22123f;
+            --accent-pink: #ff0077;
+            --accent-purple: #8a2be2;
+            --accent-blue: #00d2ff;
+            --text-gray: #a39bb8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* --- PAGE 1: SPLASH SCREEN / LOADING --- */
+        #page1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .avatar-loader {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring-spin {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top: 4px solid var(--accent-pink);
+            border-bottom: 4px solid var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .avatar-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-purple);
+            box-shadow: 0 0 25px rgba(255, 0, 119, 0.5);
+        }
+
+        .brand-name {
+            margin-top: 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255, 0, 119, 0.4);
+        }
+
+        .loading-text {
+            margin-top: 8px;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- CONTAINER WRAPPER --- */
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* BANNER */
+        .banner-card {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            background: var(--card-bg);
+            position: relative;
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 15px;
+            background: linear-gradient(to top, rgba(17, 8, 33, 0.95), transparent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mini-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-pink);
+        }
+
+        .banner-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* --- PAGE 2 & PAGE 3 COMMON --- */
+        .page {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .section-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title i {
+            color: var(--accent-pink);
+        }
+
+        /* TASK LIST SYSTEM (PAGE 2) */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            background: #0d061a;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2deg);
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(138, 43, 226, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-pink);
+            font-size: 1.1rem;
+        }
+
+        .task-text h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .task-text p {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+        }
+
+        .task-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .task-item.completed {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .task-item.completed .task-status {
+            background: #00ff88;
+            border-color: #00ff88;
+            color: #000;
+        }
+
+        /* CLAIM BUTTON */
+        .btn-claim {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            background: #1f1435;
+            color: var(--text-gray);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: not-allowed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: none;
+        }
+
+        .btn-claim.ready {
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 0, 119, 0.5);
+        }
+
+        .btn-claim.ready:hover {
+            transform: scale(1.02);
+        }
+
+        /* PAGE 3: SEARCH & VAULT LINKS */
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            background: #0d061a;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-pink);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+        }
+
+        .link-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-card {
+            background: #0d061a;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color 0.3s;
+        }
+
+        .link-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .link-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--card-border);
+        }
+
+        .link-details {
+            flex: 1;
+        }
+
+        .link-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .btn-get-link {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
+            color: #fff;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* FOOTER SOCIALS */
+        .footer-socials {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-foot-social {
+            padding: 10px;
+            border-radius: 10px;
+            background: #0d061a;
+            border: 1px solid var(--card-border);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-foot-social.yt { color: #ff0055; }
+        .btn-foot-social.wa { color: #25d366; }
     </style>
 </head>
 <body>
-    <header><div class="logo">PRINDAPAN GAMES</div></header>
-    <div class="container">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari data game / script...">
+
+    <!-- PAGE 1: LOADING SPLASH SCREEN -->
+    <div id="page1">
+        <div class="avatar-loader">
+            <div class="ring-spin"></div>
+            <!-- Menggunakan Logo Profil Youtube Kamu -->
+            <img src="https://yt3.ggpht.com/ytc/AIdro_mC_ZpW62U3-E2m4N0CgQG8hA20e3zX91V3Bf5u9A=s800-c-k-c0x00ffffff-no-rj" class="avatar-img" alt="Prindapan Logo">
         </div>
-        <div class="grid" id="cardGrid"></div>
-        <div class="socials">
-            <a href="https://youtube.com" target="_blank" class="btn-social yt"><i class="fa-brands fa-youtube"></i> SUBSCRIBE YT</a>
-            <a href="https://discord.gg" target="_blank" class="btn-social discord"><i class="fa-brands fa-discord"></i> SALURAN</a>
-            <a href="#" class="btn-social btn-extra"><i class="fa-solid fa-link"></i> SLOT 3</a>
-            <a href="#" class="btn-social btn-extra"><i class="fa-solid fa-link"></i> SLOT 4</a>
-        </div>
+        <div class="brand-name">PRINDAPAN GAMES</div>
+        <div class="loading-text">Memuat Sistem Vault...</div>
     </div>
 
+    <!-- MAIN CONTAINER -->
+    <div class="app-container">
+
+        <!-- HEADER BANNER (SELALU TAMPIL DI PAGE 2 & PAGE 3) -->
+        <div class="banner-card">
+            <!-- Gambar Banner dari Channel Youtube Kamu -->
+            <img src="https://yt3.googleusercontent.com/1G8X24g8T1VjA9Yv9_5s4j-JmJ5cKxZ2y0mE1E2V5X3M4N5O6P7Q8R9S0T1U2V3W4X5Y6Z7=w1707-fcrop64=1,00005a57ffffa5a8-k-c0x00ffffff-no-rj" class="banner-img" alt="Banner" onerror="this.src='https://via.placeholder.com/500x150/110821/ff0077?text=PRINDAPAN+GAMES'">
+            <div class="banner-overlay">
+                <img src="https://yt3.ggpht.com/ytc/AIdro_mC_ZpW62U3-E2m4N0CgQG8hA20e3zX91V3Bf5u9A=s800-c-k-c0x00ffffff-no-rj" class="mini-logo" alt="Logo">
+                <div class="banner-title">PRINDAPAN VAULT HUB</div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: TASK SYSTEM PAGE -->
+        <div id="page2" class="page active">
+            <div class="section-box">
+                <div class="section-title">
+                    <i class="fa-solid fa-list-check"></i> COMPLETE TASKS TO CONTINUE
+                </div>
+                
+                <div class="task-list">
+                    <!-- Task 1 -->
+                    <a href="https://youtube.com/@prindapan_ori?si=xoFVHlqqjgSZEkbu" target="_blank" class="task-item" onclick="completeTask(1)">
+                        <div class="task-info">
+                            <div class="task-icon"><i class="fa-brands fa-youtube"></i></div>
+                            <div class="task-text">
+                                <h4>SUBSCRIBE YOUTUBE</h4>
+                                <p>Subscribe channel Prindapan Games</p>
+                            </div>
+                        </div>
+                        <div class="task-status" id="status-1"><i class="fa-solid fa-check"></i></div>
+                    </a>
+
+                    <!-- Task 2 -->
+                    <a href="https://youtu.be/2Xhiu_JNAUs?si=uYE6VS120yJ24oNE" target="_blank" class="task-item" onclick="completeTask(2)">
+                        <div class="task-info">
+                            <div class="task-icon"><i class="fa-solid fa-thumbs-up"></i></div>
+                            <div class="task-text">
+                                <h4>LIKE + COMMENT VIDEO</h4>
+                                <p>Sukai & beri komentar di video terbaru</p>
+                            </div>
+                        </div>
+                        <div class="task-status" id="status-2"><i class="fa-solid fa-check"></i></div>
+                    </a>
+
+                    <!-- Task 3 -->
+                    <a href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="task-item" onclick="completeTask(3)">
+                        <div class="task-info">
+                            <div class="task-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                            <div class="task-text">
+                                <h4>JOIN KOMUNITAS WA</h4>
+                                <p>Gabung grup WhatsApp Prindapan</p>
+                            </div>
+                        </div>
+                        <div class="task-status" id="status-3"><i class="fa-solid fa-check"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- UNLOCK BUTTON -->
+            <button id="btnClaim" class="btn-claim" onclick="goToPage3()">
+                <i class="fa-solid fa-lock"></i> UNLOCK LINK CONTENT
+            </button>
+        </div>
+
+        <!-- PAGE 3: VAULT LINK CONTENT PAGE -->
+        <div id="page3" class="page">
+            <div class="section-box">
+                <div class="section-title">
+                    <i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT
+                </div>
+
+                <!-- Custom Search Bar -->
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari apa? Ketik...">
+                </div>
+
+                <!-- Realtime Links from Firebase -->
+                <div class="link-grid" id="cardGrid"></div>
+            </div>
+
+            <!-- Footer Quick Links -->
+            <div class="footer-socials">
+                <a href="https://youtube.com/@prindapan_ori" target="_blank" class="btn-foot-social yt">
+                    <i class="fa-brands fa-youtube"></i> YouTube
+                </a>
+                <a href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="btn-foot-social wa">
+                    <i class="fa-brands fa-whatsapp"></i> Komunitas WA
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FIREBASE & SCRIPT LOGIC -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
+        // --- PAGE 1 LOADING SCREEN TIMEOUT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('page1');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                }, 500);
+            }, 2500); // Tampil loading selama 2.5 detik
+        });
+
+        // --- TASK SYSTEM LOGIC (PAGE 2) ---
+        let completedTasks = { 1: false, 2: false, 3: false };
+
+        function completeTask(taskNum) {
+            completedTasks[taskNum] = true;
+            const taskItem = document.querySelectorAll('.task-item')[taskNum - 1];
+            taskItem.classList.add('completed');
+            
+            checkAllTasks();
+        }
+
+        function checkAllTasks() {
+            if (completedTasks[1] && completedTasks[2] && completedTasks[3]) {
+                const btn = document.getElementById('btnClaim');
+                btn.classList.add('ready');
+                btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> MASUK KE LINK CONTENT';
+            }
+        }
+
+        function goToPage3() {
+            if (completedTasks[1] && completedTasks[2] && completedTasks[3]) {
+                document.getElementById('page2').classList.remove('active');
+                document.getElementById('page3').classList.add('active');
+                window.scrollTo(0, 0);
+            } else {
+                alert('Selesaikan dulu semua task (3/3) untuk membuka link!');
+            }
+        }
+
+        // --- FIREBASE REALTIME DATABASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyDSftuyANybsSrzM7M8mvLJrd8-HhEn1BU",
             authDomain: "prindapan-games.firebaseapp.com",
@@ -60,30 +577,38 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // RENDER DATA DARI FIREBASE KE PAGE 3
         db.ref('links').on('value', (snapshot) => {
             const grid = document.getElementById('cardGrid');
             grid.innerHTML = '';
             const data = snapshot.val();
+            
+            if(!data) {
+                grid.innerHTML = '<p style="text-align:center; color: var(--text-gray); font-size:0.8rem; padding: 10px;">Belum ada link yang ditambahkan.</p>';
+                return;
+            }
+
             for (let id in data) {
                 const item = data[id];
                 grid.innerHTML += `
-                    <div class="card" data-title="${item.title.toLowerCase()}">
-                        <img src="${item.img || 'https://via.placeholder.com/300x150'}" alt="Thumb">
-                        <div class="card-body">
-                            <div class="card-title">${item.title}</div>
-                            <a href="${item.url}" target="_blank" class="btn-get">AMBIL DATA</a>
+                    <div class="link-card" data-title="${item.title.toLowerCase()}">
+                        <img src="${item.img || 'https://via.placeholder.com/100x100/110821/ff0077?text=Game'}" class="link-thumb" alt="Thumb">
+                        <div class="link-details">
+                            <div class="link-title">${item.title}</div>
+                            <a href="${item.url}" target="_blank" class="btn-get-link">AMBIL LINK</a>
                         </div>
                     </div>
                 `;
             }
         });
 
+        // SEARCH FILTER LOGIC
         function filterCards() {
             const input = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.card');
+            const cards = document.querySelectorAll('.link-card');
             cards.forEach(card => {
                 const title = card.getAttribute('data-title');
-                card.style.display = title.includes(input) ? 'block' : 'none';
+                card.style.display = title.includes(input) ? 'flex' : 'none';
             });
         }
     </script>
