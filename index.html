@@ -17,12 +17,20 @@
             --text-gray: #a39bb8;
         }
 
-        * {
+        *:not(input):not(textarea) {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
             user-select: none;
+        }
+
+        input, textarea {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            user-select: auto;
         }
 
         body {
@@ -549,4 +557,4 @@
         }
     </script>
 </body>
-</html>
+            </html>
