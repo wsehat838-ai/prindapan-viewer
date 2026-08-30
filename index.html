@@ -404,6 +404,33 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // SINKRONISASI DAFTAR KATA KASAR DARI FIREBASE ADMIN
+        let BAD_WORDS = [];
+        db.ref('badwords').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                BAD_WORDS = Array.isArray(data) ? data : Object.values(data);
+            } else {
+                BAD_WORDS = [];
+            }
+        });
+
+        // FUNGSI UNTUK MENYENSOR TEKS
+        function filterBadWords(text) {
+            if (!text) return "";
+            if (BAD_WORDS.length === 0) return text;
+            
+            let cleanText = text;
+            BAD_WORDS.forEach(word => {
+                if (word && String(word).trim() !== "") {
+                    const escapedWord = String(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(escapedWord, "gi");
+                    cleanText = cleanText.replace(regex, "***");
+                }
+            });
+            return cleanText;
+        }
+
         // 1. KONTROL SERVER (OPEN / CLOSE)
         db.ref('serverAccess').on('value', (snapshot) => {
             const isOpen = snapshot.val() !== false;
@@ -578,7 +605,8 @@
                 alert('Masukkan nama panggilan dulu, bre!');
                 return;
             }
-            currentUserNickname = nick;
+            // Filter nama panggilan kalau ada kata kasar
+            currentUserNickname = filterBadWords(nick);
             document.getElementById('chatLogin').style.display = 'none';
             document.getElementById('chatInterface').style.display = 'block';
 
@@ -592,7 +620,7 @@
                 document.getElementById('onlineUsers').innerText = count || 1;
             });
 
-            // REALTIME CHAT MESSAGES
+            // REALTIME CHAT MESSAGES WITH FILTER SENSOR
             db.ref('chatMessages').limitToLast(50).on('value', (snapshot) => {
                 const chatBox = document.getElementById('chatBox');
                 chatBox.innerHTML = '';
@@ -600,9 +628,13 @@
                 if (messages) {
                     for (let key in messages) {
                         const msg = messages[key];
+                        // Teks disaring saat ditampilkan
+                        const cleanUser = filterBadWords(msg.user || msg.username);
+                        const cleanText = filterBadWords(msg.text || msg.message);
+                        
                         chatBox.innerHTML += `
                             <div class="chat-msg">
-                                <span class="username">${escapeHtml(msg.user || msg.username)}:</span> ${escapeHtml(msg.text || msg.message)}
+                                <span class="username">${escapeHtml(cleanUser)}:</span> ${escapeHtml(cleanText)}
                             </div>
                         `;
                     }
@@ -616,9 +648,12 @@
             const msg = input.value.trim();
             if (!msg || !currentUserNickname) return;
 
+            // Sensor pesan sebelum dikirim ke Firebase
+            const cleanMsg = filterBadWords(msg);
+
             db.ref('chatMessages').push({
                 user: currentUserNickname,
-                text: msg,
+                text: cleanMsg,
                 timestamp: Date.now()
             });
             input.value = '';
@@ -633,4 +668,4 @@
         }
     </script>
 </body>
-                </html>
+                        </html>
