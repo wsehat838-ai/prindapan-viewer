@@ -18,20 +18,12 @@
             --text-color: #ffffff;
         }
 
-        *:not(input):not(textarea) {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
             user-select: none;
-        }
-
-        input, textarea {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            user-select: auto;
         }
 
         body {
@@ -42,7 +34,7 @@
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            transition: background-color 0.3s ease;
         }
 
         /* LIVE BROADCAST POPUP */
@@ -86,42 +78,6 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 0, 119, 0); }
         }
 
-        /* SERVER CLOSED SCREEN */
-        #closedScreen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #07040d;
-            z-index: 99999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-        #closedScreen i { font-size: 4rem; color: var(--accent-pink); margin-bottom: 20px; }
-        #closedScreen h2 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #fff; margin-bottom: 10px; }
-        #closedScreen p { font-size: 0.9rem; color: var(--text-gray); max-width: 320px; }
-
-        /* EMOJI RAIN CONTAINER */
-        #emojiRainContainer {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-        }
-        .falling-emoji {
-            position: absolute;
-            top: -50px;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(360deg);
-            }
-        }
-
         /* PAGE 1: SPLASH SCREEN */
         #page1 {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -149,7 +105,7 @@
         .page { display: none; flex-direction: column; gap: 15px; width: 100%; }
         .page.active { display: flex; }
 
-        .section-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background-color 0.4s ease; }
+        .section-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .section-title { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 800; color: var(--text-color); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
         .section-title i { color: var(--accent-pink); }
 
@@ -230,16 +186,6 @@
         </div>
         <button class="live-popup-close" onclick="closeLivePopup()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-
-    <!-- SERVER CLOSED OVERLAY -->
-    <div id="closedScreen">
-        <i class="fa-solid fa-lock"></i>
-        <h2>SERVER TUTUP</h2>
-        <p>Server sedang ditutup oleh Admin. Kembali lagi tahun depan!</p>
-    </div>
-
-    <!-- HOSTER FOR EMOJI RAIN -->
-    <div id="emojiRainContainer"></div>
 
     <!-- PAGE 1: SPLASH SCREEN -->
     <div id="page1">
@@ -458,67 +404,85 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // 1. CONTROL: SITE STATUS (OPEN / CLOSE)
-        db.ref('siteStatus').on('value', (snapshot) => {
-            const status = snapshot.val();
-            const closedScreen = document.getElementById('closedScreen');
-            if (status === 'CLOSED') {
-                closedScreen.style.display = 'flex';
-            } else {
-                closedScreen.style.display = 'none';
+        // 1. KONTROL SERVER (OPEN / CLOSE)
+        db.ref('serverAccess').on('value', (snapshot) => {
+            const isOpen = snapshot.val() !== false;
+            let lockOverlay = document.getElementById('serverLockOverlay');
+            
+            if (!isOpen) {
+                if (!lockOverlay) {
+                    lockOverlay = document.createElement('div');
+                    lockOverlay.id = 'serverLockOverlay';
+                    lockOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#07040d;z-index:999999;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;';
+                    lockOverlay.innerHTML = `
+                        <i class="fa-solid fa-ban" style="font-size: 4rem; color: #ff0055; margin-bottom: 15px;"></i>
+                        <h1 style="font-family: Orbitron, sans-serif; font-size: 1.5rem; color: #fff; margin-bottom: 10px;">SERVER TUTUP</h1>
+                        <p style="color: #a39bb8; font-size: 0.9rem;">Server sedang ditutup oleh Admin. Kembali lagi nanti!</p>
+                    `;
+                    document.body.appendChild(lockOverlay);
+                }
+                lockOverlay.style.display = 'flex';
+            } else if (lockOverlay) {
+                lockOverlay.style.display = 'none';
             }
         });
 
-        // 2. CONTROL: THEME & CUSTOM BACKGROUND COLOR
-        db.ref('siteTheme').on('value', (snapshot) => {
-            const theme = snapshot.val();
-            if (!theme) return;
+        // 2. KONTROL TEMA (LIGHT / DARK / CUSTOM COLOR)
+        db.ref('viewerTheme').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
 
-            if (theme.mode === 'light') {
-                document.documentElement.style.setProperty('--bg-dark', '#f4f4f9');
-                document.documentElement.style.setProperty('--card-bg', '#ffffff');
-                document.documentElement.style.setProperty('--card-border', '#e0e0e8');
-                document.documentElement.style.setProperty('--text-color', '#1a1a1a');
-            } else if (theme.mode === 'dark') {
+            if (data.mode === 'light') {
+                document.documentElement.style.setProperty('--bg-dark', '#ffffff');
+                document.documentElement.style.setProperty('--card-bg', '#f0f0f5');
+                document.documentElement.style.setProperty('--card-border', '#d1d1e0');
+                document.documentElement.style.setProperty('--text-color', '#111111');
+            } else if (data.mode === 'dark') {
                 document.documentElement.style.setProperty('--bg-dark', '#07040d');
                 document.documentElement.style.setProperty('--card-bg', '#110821');
                 document.documentElement.style.setProperty('--card-border', '#22123f');
                 document.documentElement.style.setProperty('--text-color', '#ffffff');
-            }
-
-            if (theme.customBg) {
-                document.documentElement.style.setProperty('--bg-dark', theme.customBg);
+            } else if (data.mode === 'custom' && data.bgColor) {
+                document.documentElement.style.setProperty('--bg-dark', data.bgColor);
             }
         });
 
-        // 3. CONTROL: SPAM HUJAN EMOJI HALLOWEEN
-        let lastEmojiTimestamp = 0;
-        db.ref('emojiSpam').on('value', (snapshot) => {
+        // 3. PRANK HUJAN EMOJI HALLOWEEN
+        let lastPrankTime = Date.now();
+        db.ref('activePrank').on('value', (snapshot) => {
             const data = snapshot.val();
-            if (!data) return;
-            if (lastEmojiTimestamp === 0) { lastEmojiTimestamp = data.timestamp || 1; return; }
-            if (data.timestamp && data.timestamp > lastEmojiTimestamp) {
-                lastEmojiTimestamp = data.timestamp;
-                triggerEmojiRain();
+            if (!data || !data.timestamp) return;
+
+            if (data.timestamp > lastPrankTime) {
+                lastPrankTime = data.timestamp;
+                if (data.type === 'halloween_rain') {
+                    triggerHalloweenRain();
+                }
             }
         });
 
-        function triggerEmojiRain() {
-            const emojis = ['🎃', '👻', '🦇', '🕷️', '💀', '🍬', '🧙‍♀️', '🕸️'];
-            const container = document.getElementById('emojiRainContainer');
-            
-            for (let i = 0; i < 40; i++) {
+        function triggerHalloweenRain() {
+            const emojis = ['🎃', '👻', '🦇', '🕷️', '💀', '🍬', '🔥', '✨'];
+            for (let i = 0; i < 45; i++) {
                 setTimeout(() => {
                     const el = document.createElement('div');
-                    el.classList.add('falling-emoji');
                     el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                    el.style.left = Math.random() * 100 + 'vw';
-                    el.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                    el.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    container.appendChild(el);
+                    el.style.position = 'fixed';
+                    el.style.top = '-60px';
+                    el.style.left = Math.random() * 95 + 'vw';
+                    el.style.fontSize = (Math.random() * 25 + 18) + 'px';
+                    el.style.zIndex = '99999';
+                    el.style.pointerEvents = 'none';
+                    el.style.transition = 'transform 2.5s linear, opacity 2.5s ease';
+                    document.body.appendChild(el);
 
-                    setTimeout(() => el.remove(), 4000);
-                }, i * 80);
+                    setTimeout(() => {
+                        el.style.transform = `translateY(105vh) rotate(${Math.random() * 360}deg)`;
+                        el.style.opacity = '0';
+                    }, 50);
+
+                    setTimeout(() => el.remove(), 2600);
+                }, i * 60);
             }
         }
 
@@ -555,10 +519,10 @@
             for (let id in data) {
                 const item = data[id];
                 grid.innerHTML += `
-                    <div class="large-card" data-title="${item.title.toLowerCase()}">
+                    <div class="large-card" data-title="${escapeHtml(item.title).toLowerCase()}">
                         <div class="card-banner-wrapper"><img src="${item.img || BANNER_SRC}" class="card-banner-img"></div>
                         <div class="card-body">
-                            <div class="card-title">${item.title}</div>
+                            <div class="card-title">${escapeHtml(item.title)}</div>
                             <a href="${item.url}" target="_blank" class="btn-action">AMBIL DATA</a>
                         </div>
                     </div>
@@ -638,7 +602,7 @@
                         const msg = messages[key];
                         chatBox.innerHTML += `
                             <div class="chat-msg">
-                                <span class="username">${escapeHtml(msg.user)}:</span> ${escapeHtml(msg.text)}
+                                <span class="username">${escapeHtml(msg.user || msg.username)}:</span> ${escapeHtml(msg.text || msg.message)}
                             </div>
                         `;
                     }
@@ -665,8 +629,8 @@
         }
 
         function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return (text || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
-</html>
+                </html>
