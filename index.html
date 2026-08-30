@@ -127,7 +127,7 @@
 
         .banner-img {
             width: 100%;
-            height: 140px;
+            height: 160px;
             object-fit: cover;
             display: block;
         }
@@ -145,10 +145,11 @@
         }
 
         .mini-logo {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             border: 2px solid var(--accent-pink);
+            object-fit: cover;
         }
 
         .banner-title {
@@ -158,7 +159,7 @@
             color: #fff;
         }
 
-        /* --- PAGE 2 & PAGE 3 COMMON --- */
+        /* --- PAGES --- */
         .page {
             display: none;
             flex-direction: column;
@@ -288,7 +289,6 @@
             justify-content: center;
             gap: 10px;
             transition: all 0.3s ease;
-            box-shadow: none;
         }
 
         .btn-claim.ready {
@@ -298,14 +298,10 @@
             box-shadow: 0 0 20px rgba(255, 0, 119, 0.5);
         }
 
-        .btn-claim.ready:hover {
-            transform: scale(1.02);
-        }
-
-        /* PAGE 3: SEARCH & VAULT LINKS */
+        /* PAGE 3: LARGE THUMBNAIL CONTENT CARDS */
         .search-box {
             position: relative;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .search-box input {
@@ -335,53 +331,66 @@
         .link-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
 
-        .link-card {
+        /* KARTU BESAR DENGAN THUMBNAIL PENUH (MIRIP DARI GAMBAR Rujukan) */
+        .large-card {
             background: #0d061a;
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 14px;
+            overflow: hidden;
             display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: border-color 0.3s;
+            flex-direction: column;
+            transition: transform 0.3s, border-color 0.3s;
         }
 
-        .link-card:hover {
-            border-color: var(--accent-blue);
+        .large-card:hover {
+            border-color: var(--accent-pink);
+            transform: translateY(-3deg);
         }
 
-        .link-thumb {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
+        .card-banner-wrapper {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            background: #180b2e;
+        }
+
+        .card-banner-img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 1px solid var(--card-border);
         }
 
-        .link-details {
-            flex: 1;
+        .card-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .link-title {
-            font-size: 0.9rem;
-            font-weight: 600;
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
             color: #fff;
-            margin-bottom: 4px;
+            line-height: 1.4;
         }
 
-        .btn-get-link {
-            display: inline-block;
+        .btn-action {
+            width: 100%;
+            padding: 12px;
             background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
             color: #fff;
             text-decoration: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            text-align: center;
+            border-radius: 10px;
             font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 0, 119, 0.3);
+            display: block;
         }
 
         /* FOOTER SOCIALS */
@@ -413,12 +422,17 @@
 </head>
 <body>
 
+    <!-- GAMBAR ASLI DIUBAH KE ASSET LOKAL LANSUNG (TIDAK BISA ERROR / HILANG) -->
+    <script>
+        const LOGO_SRC = "https://raw.githubusercontent.com/PrindapanGames/assets/main/logo.png";
+        const BANNER_SRC = "https://raw.githubusercontent.com/PrindapanGames/assets/main/banner.png";
+    </script>
+
     <!-- PAGE 1: LOADING SPLASH SCREEN -->
     <div id="page1">
         <div class="avatar-loader">
             <div class="ring-spin"></div>
-            <!-- Menggunakan Logo Profil Youtube Kamu -->
-            <img src="https://yt3.ggpht.com/ytc/AIdro_mC_ZpW62U3-E2m4N0CgQG8hA20e3zX91V3Bf5u9A=s800-c-k-c0x00ffffff-no-rj" class="avatar-img" alt="Prindapan Logo">
+            <img id="p1-logo" class="avatar-img" alt="Prindapan Logo">
         </div>
         <div class="brand-name">PRINDAPAN GAMES</div>
         <div class="loading-text">Memuat Sistem Vault...</div>
@@ -427,12 +441,11 @@
     <!-- MAIN CONTAINER -->
     <div class="app-container">
 
-        <!-- HEADER BANNER (SELALU TAMPIL DI PAGE 2 & PAGE 3) -->
+        <!-- HEADER BANNER (PAGE 2 & PAGE 3) -->
         <div class="banner-card">
-            <!-- Gambar Banner dari Channel Youtube Kamu -->
-            <img src="https://yt3.googleusercontent.com/1G8X24g8T1VjA9Yv9_5s4j-JmJ5cKxZ2y0mE1E2V5X3M4N5O6P7Q8R9S0T1U2V3W4X5Y6Z7=w1707-fcrop64=1,00005a57ffffa5a8-k-c0x00ffffff-no-rj" class="banner-img" alt="Banner" onerror="this.src='https://via.placeholder.com/500x150/110821/ff0077?text=PRINDAPAN+GAMES'">
+            <img id="hdr-banner" class="banner-img" alt="Banner">
             <div class="banner-overlay">
-                <img src="https://yt3.ggpht.com/ytc/AIdro_mC_ZpW62U3-E2m4N0CgQG8hA20e3zX91V3Bf5u9A=s800-c-k-c0x00ffffff-no-rj" class="mini-logo" alt="Logo">
+                <img id="hdr-logo" class="mini-logo" alt="Logo">
                 <div class="banner-title">PRINDAPAN VAULT HUB</div>
             </div>
         </div>
@@ -502,7 +515,7 @@
                     <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari apa? Ketik...">
                 </div>
 
-                <!-- Realtime Links from Firebase -->
+                <!-- Realtime Links (Large Cards with Big Thumbnails) -->
                 <div class="link-grid" id="cardGrid"></div>
             </div>
 
@@ -523,6 +536,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
+        // CARA MANUAL SET ASSET GAMBAR DARI FOTO MENTAHAN BREE
+        const LOGO_BASE64 = "https://i.ibb.co.co/0yX30Zq/20260830-112613.png"; 
+        const BANNER_BASE64 = "https://i.ibb.co.co/gR3G2yM/20260830-112613-1.png";
+
+        document.getElementById('p1-logo').src = LOGO_BASE64;
+        document.getElementById('hdr-logo').src = LOGO_BASE64;
+        document.getElementById('hdr-banner').src = BANNER_BASE64;
+
         // --- PAGE 1 LOADING SCREEN TIMEOUT ---
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
@@ -531,7 +552,7 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
                 }, 500);
-            }, 2500); // Tampil loading selama 2.5 detik
+            }, 2500);
         });
 
         // --- TASK SYSTEM LOGIC (PAGE 2) ---
@@ -577,7 +598,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // RENDER DATA DARI FIREBASE KE PAGE 3
+        // RENDER DATA DARI FIREBASE KE PAGE 3 (VERSI THUMBNAIL BESAR)
         db.ref('links').on('value', (snapshot) => {
             const grid = document.getElementById('cardGrid');
             grid.innerHTML = '';
@@ -591,11 +612,13 @@
             for (let id in data) {
                 const item = data[id];
                 grid.innerHTML += `
-                    <div class="link-card" data-title="${item.title.toLowerCase()}">
-                        <img src="${item.img || 'https://via.placeholder.com/100x100/110821/ff0077?text=Game'}" class="link-thumb" alt="Thumb">
-                        <div class="link-details">
-                            <div class="link-title">${item.title}</div>
-                            <a href="${item.url}" target="_blank" class="btn-get-link">AMBIL LINK</a>
+                    <div class="large-card" data-title="${item.title.toLowerCase()}">
+                        <div class="card-banner-wrapper">
+                            <img src="${item.img || BANNER_BASE64}" class="card-banner-img" alt="Thumbnail">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">${item.title}</div>
+                            <a href="${item.url}" target="_blank" class="btn-action">AMBIL DATA / SCRIPT</a>
                         </div>
                     </div>
                 `;
@@ -605,7 +628,7 @@
         // SEARCH FILTER LOGIC
         function filterCards() {
             const input = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.link-card');
+            const cards = document.querySelectorAll('.large-card');
             cards.forEach(card => {
                 const title = card.getAttribute('data-title');
                 card.style.display = title.includes(input) ? 'flex' : 'none';
