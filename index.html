@@ -35,7 +35,7 @@
             overflow-x: hidden;
         }
 
-        /* LIVE BROADCAST POPUP STYLES */
+        /* LIVE BROADCAST POPUP */
         .live-popup-container {
             position: fixed;
             top: -120px;
@@ -56,57 +56,19 @@
             transition: top 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
-        .live-popup-container.show {
-            top: 20px;
-        }
-
+        .live-popup-container.show { top: 20px; }
         .live-popup-icon {
-            width: 42px;
-            height: 42px;
+            width: 42px; height: 42px;
             background: rgba(255, 0, 119, 0.2);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-pink);
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-pink); font-size: 1.2rem; flex-shrink: 0;
             animation: pulse-glow 1.5s infinite;
         }
-
-        .live-popup-body {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            overflow: hidden;
-        }
-
-        .live-popup-header {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--accent-blue);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .live-popup-msg {
-            font-size: 0.85rem;
-            color: #fff;
-            font-weight: 600;
-            word-break: break-word;
-        }
-
-        .live-popup-close {
-            background: transparent;
-            border: none;
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            cursor: pointer;
-            padding: 5px;
-        }
+        .live-popup-body { flex-grow: 1; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+        .live-popup-header { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 800; color: var(--accent-blue); display: flex; align-items: center; gap: 6px; }
+        .live-popup-msg { font-size: 0.85rem; color: #fff; font-weight: 600; word-break: break-word; }
+        .live-popup-close { background: transparent; border: none; color: var(--text-gray); font-size: 1.1rem; cursor: pointer; padding: 5px; }
 
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 0 0 rgba(255, 0, 119, 0.6); }
@@ -116,405 +78,109 @@
 
         /* PAGE 1: SPLASH SCREEN */
         #page1 {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.5s ease, visibility 0.5s;
         }
+        .avatar-loader { position: relative; width: 160px; height: 160px; display: flex; justify-content: center; align-items: center; }
+        .ring-spin { position: absolute; width: 100%; height: 100%; border: 4px solid transparent; border-top: 4px solid var(--accent-pink); border-bottom: 4px solid var(--accent-blue); border-radius: 50%; animation: spin 1.5s linear infinite; }
+        .avatar-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-purple); box-shadow: 0 0 25px rgba(255, 0, 119, 0.5); }
+        .brand-name { margin-top: 25px; font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+        .loading-text { margin-top: 8px; color: var(--text-gray); font-size: 0.85rem; }
 
-        .avatar-loader {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .ring-spin {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 4px solid transparent;
-            border-top: 4px solid var(--accent-pink);
-            border-bottom: 4px solid var(--accent-blue);
-            border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-        }
+        /* APP CONTAINER */
+        .app-container { width: 100%; max-width: 500px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
 
-        .avatar-img {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent-purple);
-            box-shadow: 0 0 25px rgba(255, 0, 119, 0.5);
-        }
+        .banner-card { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--card-border); background: var(--card-bg); position: relative; }
+        .banner-img { width: 100%; height: 140px; object-fit: cover; display: block; }
+        .banner-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 15px; background: linear-gradient(to top, rgba(17, 8, 33, 0.95), transparent); display: flex; align-items: center; gap: 12px; }
+        .mini-logo { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-pink); object-fit: cover; }
+        .banner-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 800; color: #fff; }
 
-        .brand-name {
-            margin-top: 25px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(255, 0, 119, 0.4);
-        }
+        .page { display: none; flex-direction: column; gap: 15px; width: 100%; }
+        .page.active { display: flex; }
 
-        .loading-text {
-            margin-top: 8px;
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
+        .section-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .section-title i { color: var(--accent-pink); }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* NAV TABS (ROLE, GS STYLE NAV BAR) */
+        .nav-tabs { display: flex; background: #0d061a; border-radius: 14px; padding: 5px; border: 1px solid var(--card-border); gap: 5px; margin-bottom: 5px; }
+        .tab-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-gray); font-size: 0.75rem; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.3s ease; }
+        .tab-btn i { font-size: 1rem; }
+        .tab-btn.active { background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple)); color: #fff; box-shadow: 0 4px 15px rgba(255, 0, 119, 0.3); }
 
-        /* CONTAINER WRAPPER */
-        .app-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        /* SEARCH TAB */
+        .task-list { display: flex; flex-direction: column; gap: 10px; }
+        .task-item { background: #0d061a; border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; }
+        .task-info { display: flex; align-items: center; gap: 10px; }
+        .task-icon { width: 34px; height: 34px; border-radius: 8px; background: rgba(138, 43, 226, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-pink); }
+        .task-text h4 { font-size: 0.8rem; font-weight: 600; }
+        .task-text p { font-size: 0.65rem; color: var(--text-gray); }
+        .task-status { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--card-border); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: transparent; }
+        .task-item.completed { border-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .task-item.completed .task-status { background: #00ff88; border-color: #00ff88; color: #000; }
 
-        /* BANNER HEADER */
-        .banner-card {
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-            background: var(--card-bg);
-            position: relative;
-        }
+        .btn-claim { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #1f1435; color: var(--text-gray); font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 0.85rem; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-claim.ready { background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple)); color: #fff; cursor: pointer; }
 
-        .banner-img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            display: block;
-        }
+        .search-box { position: relative; margin-bottom: 15px; }
+        .search-box input { width: 100%; padding: 12px 12px 12px 40px; background: #0d061a; border: 1px solid var(--card-border); border-radius: 10px; color: #fff; font-size: 0.8rem; outline: none; }
+        .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
 
-        .banner-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px 15px;
-            background: linear-gradient(to top, rgba(17, 8, 33, 0.95), transparent);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .link-grid { display: flex; flex-direction: column; gap: 15px; }
+        .large-card { background: #0d061a; border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+        .card-banner-wrapper { width: 100%; height: 160px; background: #180b2e; }
+        .card-banner-img { width: 100%; height: 100%; object-fit: cover; }
+        .card-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .card-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
+        .btn-action { width: 100%; padding: 10px; background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple)); color: #fff; text-decoration: none; text-align: center; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 0.8rem; display: block; }
 
-        .mini-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-pink);
-            object-fit: cover;
-        }
-
-        .banner-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        /* PAGES */
-        .page {
-            display: none;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-        }
-
-        .page.active {
-            display: flex;
-        }
-
-        .section-box {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        .section-title i {
-            color: var(--accent-pink);
-        }
-
-        /* TASK LIST */
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .task-item {
-            background: #0d061a;
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .task-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .task-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: rgba(138, 43, 226, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-pink);
-            font-size: 1.1rem;
-        }
-
-        .task-text h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .task-text p {
-            font-size: 0.7rem;
-            color: var(--text-gray);
-        }
-
-        .task-status {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid var(--card-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            color: transparent;
-            transition: all 0.3s ease;
-        }
-
-        .task-item.completed {
-            border-color: #00ff88;
-            background: rgba(0, 255, 136, 0.03);
-        }
-
-        .task-item.completed .task-status {
-            background: #00ff88;
-            border-color: #00ff88;
-            color: #000;
-        }
-
-        /* CLAIM BUTTON */
-        .btn-claim {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            background: #1f1435;
-            color: var(--text-gray);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 0.95rem;
-            cursor: not-allowed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-claim.ready {
-            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 0, 119, 0.5);
-        }
-
-        /* PAGE 3 CONTENT CARDS */
-        .search-box {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 15px 14px 45px;
-            background: #0d061a;
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-gray);
-        }
-
-        .link-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .large-card {
-            background: #0d061a;
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-banner-wrapper {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            background: #180b2e;
-        }
-
-        .card-banner-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .card-body {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .btn-action {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
-            color: #fff;
-            text-decoration: none;
-            text-align: center;
-            border-radius: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 0.85rem;
-            display: block;
-        }
-
-        .footer-socials {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-foot-social {
-            padding: 10px;
-            border-radius: 10px;
-            background: #0d061a;
-            border: 1px solid var(--card-border);
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
+        .footer-socials { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; }
+        .btn-foot-social { padding: 10px; border-radius: 8px; background: #0d061a; border: 1px solid var(--card-border); color: #fff; text-decoration: none; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-foot-social.yt { color: #ff0055; }
         .btn-foot-social.wa { color: #25d366; }
 
-        /* BUTTON HUBUNGI ADMIN */
-        .btn-admin-contact {
-            width: 100%;
-            margin-top: 10px;
-            padding: 12px;
-            border-radius: 10px;
-            background: linear-gradient(45deg, #25d366, #128c7e);
-            border: 1px solid rgba(37, 211, 102, 0.4);
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
-            transition: all 0.3s ease;
-        }
+        .btn-admin-contact { width: 100%; margin-top: 8px; padding: 12px; border-radius: 10px; background: linear-gradient(45deg, #25d366, #128c7e); border: 1px solid rgba(37, 211, 102, 0.4); color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        .btn-admin-contact:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
+        /* INFO TAB & RATING FITUR */
+        .info-card { background: #0d061a; border-radius: 12px; padding: 14px; border: 1px solid var(--card-border); margin-bottom: 10px; font-size: 0.8rem; color: var(--text-gray); }
+        .info-card h4 { color: #fff; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+
+        .rating-stars { display: flex; gap: 8px; justify-content: center; margin: 10px 0; font-size: 1.5rem; color: #44345e; cursor: pointer; }
+        .rating-stars i.active { color: #ffb700; text-shadow: 0 0 10px rgba(255, 183, 0, 0.5); }
+
+        .feedback-input { width: 100%; background: #0d061a; border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; color: #fff; font-size: 0.8rem; outline: none; resize: none; margin-bottom: 10px; }
+
+        .btn-send-rating { width: 100%; padding: 10px; background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 8px; color: #fff; font-weight: 700; cursor: pointer; font-size: 0.8rem; }
+
+        /* LIVE CHAT TAB */
+        .chat-header { display: flex; justify-content: space-between; align-items: center; background: #0d061a; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 10px; }
+        .online-count { font-size: 0.75rem; color: #00ff88; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        
+        .chat-box { height: 260px; background: #0d061a; border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .chat-msg { font-size: 0.78rem; background: rgba(255, 255, 255, 0.03); padding: 6px 10px; border-radius: 6px; word-break: break-word; }
+        .chat-msg span.username { font-weight: 700; color: var(--accent-pink); margin-right: 6px; }
+
+        .chat-input-wrapper { display: flex; gap: 6px; }
+        .chat-input { flex-grow: 1; background: #0d061a; border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 0.8rem; outline: none; }
+        .btn-send-chat { padding: 0 16px; background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple)); border: none; border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.9rem; }
+
+        .login-chat-box { display: flex; flex-direction: column; gap: 10px; padding: 15px; background: #0d061a; border-radius: 12px; border: 1px solid var(--card-border); text-align: center; }
+        .login-chat-box input { padding: 10px; background: #110821; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; outline: none; text-align: center; }
     </style>
 </head>
 <body>
 
     <!-- REALTIME LIVE BROADCAST POPUP -->
     <div id="livePopup" class="live-popup-container">
-        <div class="live-popup-icon">
-            <i class="fa-solid fa-bullhorn"></i>
-        </div>
+        <div class="live-popup-icon"><i class="fa-solid fa-bullhorn"></i></div>
         <div class="live-popup-body">
-            <div class="live-popup-header">
-                <i class="fa-solid fa-circle" style="font-size: 0.5rem; color: var(--accent-pink);"></i> ADMIN STREAM BROADCAST
-            </div>
-            <div id="livePopupText" class="live-popup-msg">Pesan broadcast admin akan tampil di sini...</div>
+            <div class="live-popup-header"><i class="fa-solid fa-circle" style="font-size: 0.5rem; color: var(--accent-pink);"></i> ADMIN BROADCAST</div>
+            <div id="livePopupText" class="live-popup-msg">...</div>
         </div>
         <button class="live-popup-close" onclick="closeLivePopup()"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -526,7 +192,7 @@
             <img id="p1-logo" class="avatar-img" alt="Logo">
         </div>
         <div class="brand-name">PRINDAPAN GAMES</div>
-        <div class="loading-text">Memuat Sistem Vault...</div>
+        <div class="loading-text">Memuat Vault...</div>
     </div>
 
     <!-- MAIN CONTAINER -->
@@ -544,79 +210,135 @@
         <!-- PAGE 2: TASK SYSTEM -->
         <div id="page2" class="page active">
             <div class="section-box">
-                <div class="section-title">
-                    <i class="fa-solid fa-list-check"></i> COMPLETE TASKS TO CONTINUE
-                </div>
-                
+                <div class="section-title"><i class="fa-solid fa-list-check"></i> COMPLETE TASKS TO CONTINUE</div>
                 <div class="task-list">
                     <a href="https://youtube.com/@prindapan_ori?si=xoFVHlqqjgSZEkbu" target="_blank" class="task-item" onclick="completeTask(1)">
                         <div class="task-info">
                             <div class="task-icon"><i class="fa-brands fa-youtube"></i></div>
-                            <div class="task-text">
-                                <h4>SUBSCRIBE YOUTUBE</h4>
-                                <p>Subscribe channel Prindapan Games</p>
-                            </div>
+                            <div class="task-text"><h4>SUBSCRIBE YOUTUBE</h4><p>Subscribe channel Prindapan Games</p></div>
                         </div>
                         <div class="task-status"><i class="fa-solid fa-check"></i></div>
                     </a>
-
                     <a href="https://youtu.be/2Xhiu_JNAUs?si=uYE6VS120yJ24oNE" target="_blank" class="task-item" onclick="completeTask(2)">
                         <div class="task-info">
                             <div class="task-icon"><i class="fa-solid fa-thumbs-up"></i></div>
-                            <div class="task-text">
-                                <h4>LIKE + COMMENT VIDEO</h4>
-                                <p>Sukai & beri komentar di video terbaru</p>
-                            </div>
+                            <div class="task-text"><h4>LIKE + COMMENT VIDEO</h4><p>Sukai & beri komentar di video terbaru</p></div>
                         </div>
                         <div class="task-status"><i class="fa-solid fa-check"></i></div>
                     </a>
-
                     <a href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="task-item" onclick="completeTask(3)">
                         <div class="task-info">
                             <div class="task-icon"><i class="fa-brands fa-whatsapp"></i></div>
-                            <div class="task-text">
-                                <h4>JOIN KOMUNITAS WA</h4>
-                                <p>Gabung grup WhatsApp Prindapan</p>
-                            </div>
+                            <div class="task-text"><h4>JOIN KOMUNITAS WA</h4><p>Gabung grup WhatsApp Prindapan</p></div>
                         </div>
                         <div class="task-status"><i class="fa-solid fa-check"></i></div>
                     </a>
                 </div>
             </div>
-
-            <button id="btnClaim" class="btn-claim" onclick="goToPage3()">
-                <i class="fa-solid fa-lock"></i> UNLOCK LINK CONTENT
-            </button>
+            <button id="btnClaim" class="btn-claim" onclick="goToPage3()"><i class="fa-solid fa-lock"></i> UNLOCK LINK CONTENT</button>
         </div>
 
-        <!-- PAGE 3: VAULT CONTENT -->
+        <!-- PAGE 3: CONTENT VIEW WITH MENU TABS -->
         <div id="page3" class="page">
-            <div class="section-box">
-                <div class="section-title">
-                    <i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT
-                </div>
 
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari apa? Ketik...">
-                </div>
-
-                <div class="link-grid" id="cardGrid"></div>
+            <!-- NAV TABS -->
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchSubTab('searchTab', this)">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+                <button class="tab-btn" onclick="switchSubTab('infoTab', this)">
+                    <i class="fa-solid fa-circle-info"></i> Info
+                </button>
+                <button class="tab-btn" onclick="switchSubTab('chatTab', this)">
+                    <i class="fa-solid fa-comments"></i> Live Chat
+                </button>
             </div>
 
-            <div class="footer-socials">
-                <a href="https://youtube.com/@prindapan_ori" target="_blank" class="btn-foot-social yt">
-                    <i class="fa-brands fa-youtube"></i> YouTube
-                </a>
-                <a href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="btn-foot-social wa">
-                    <i class="fa-brands fa-whatsapp"></i> Komunitas WA
+            <!-- SUB TAB 1: SEARCH (LINK VAULT) -->
+            <div id="searchTab" class="sub-tab-content">
+                <div class="section-box">
+                    <div class="section-title"><i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT</div>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari apa? Ketik...">
+                    </div>
+                    <div class="link-grid" id="cardGrid"></div>
+                </div>
+
+                <div class="footer-socials">
+                    <a href="https://youtube.com/@prindapan_ori" target="_blank" class="btn-foot-social yt"><i class="fa-brands fa-youtube"></i> YouTube</a>
+                    <a href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="btn-foot-social wa"><i class="fa-brands fa-whatsapp"></i> Komunitas WA</a>
+                </div>
+
+                <a href="https://wa.me/6283139352624?text=Halo%20Admin%20Prindapan,%20saya%20mau%20tanya%20" target="_blank" class="btn-admin-contact">
+                    <i class="fa-solid fa-headset"></i> Hubungi Admin
                 </a>
             </div>
 
-            <!-- TOMBOL HUBUNGI ADMIN -->
-            <a href="https://wa.me/6283139352624?text=Halo%20Admin%20Prindapan,%20saya%20mau%20tanya%20" target="_blank" class="btn-admin-contact">
-                <i class="fa-solid fa-headset"></i> Hubungi Admin
-            </a>
+            <!-- SUB TAB 2: INFO & RATING FITUR -->
+            <div id="infoTab" class="sub-tab-content" style="display: none;">
+                <div class="section-box">
+                    <div class="section-title"><i class="fa-solid fa-circle-info"></i> FITUR WEB VAULT</div>
+                    
+                    <div class="info-card">
+                        <h4><i class="fa-solid fa-bolt" style="color: var(--accent-pink);"></i> Realtime Data Update</h4>
+                        <p>Daftar file vault dan pesan broadcast otomatis ter-update secara langsung tanpa perlu mereload halaman.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4><i class="fa-solid fa-comments" style="color: var(--accent-blue);"></i> Live Chat Stream</h4>
+                        <p>Fitur percakapan publik antar viewer secara realtime.</p>
+                    </div>
+
+                    <!-- RATING SYSTEM -->
+                    <div class="section-title" style="margin-top: 15px;"><i class="fa-solid fa-star" style="color: #ffb700;"></i> BRIKAN RATING & SARAN</div>
+                    
+                    <div class="rating-stars" id="starContainer">
+                        <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+                        <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+                        <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+                        <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+                        <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+                    </div>
+
+                    <textarea id="feedbackText" class="feedback-input" rows="3" placeholder="Tuliskan saran atau kritik kamu di sini..."></textarea>
+                    
+                    <button class="btn-send-rating" onclick="sendRatingAndFeedback()"><i class="fa-solid fa-paper-plane"></i> Kirim Ulasan</button>
+                </div>
+            </div>
+
+            <!-- SUB TAB 3: LIVE CHAT -->
+            <div id="chatTab" class="sub-tab-content" style="display: none;">
+                <div class="section-box">
+                    
+                    <!-- FORM LOGIN SEMENTARA -->
+                    <div id="chatLogin" class="login-chat-box">
+                        <h4 style="font-size: 0.9rem; font-family: 'Orbitron', sans-serif;"><i class="fa-solid fa-user-astronaut"></i> MASUK LIVE CHAT</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-gray);">Masukkan nama panggilan kamu untuk mulai mengobrol:</p>
+                        <input type="text" id="chatNickname" placeholder="Contoh: Gamer99">
+                        <button class="btn-send-rating" onclick="joinChat()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Chat</button>
+                    </div>
+
+                    <!-- INTERFACE CHAT -->
+                    <div id="chatInterface" style="display: none;">
+                        <div class="chat-header">
+                            <span style="font-size: 0.8rem; font-weight: 700;"><i class="fa-solid fa-comments"></i> STREAM CHAT</span>
+                            <div class="online-count">
+                                <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> <span id="onlineUsers">1</span> Online
+                            </div>
+                        </div>
+
+                        <div class="chat-box" id="chatBox"></div>
+
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="chatInputMessage" class="chat-input" placeholder="Tulis pesan..." onkeypress="handleChatEnter(event)">
+                            <button class="btn-send-chat" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -624,7 +346,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        // DIRECT LINK GAMBAR TERBARU DARI IMGBB
         const LOGO_SRC = "https://i.ibb.co.com/8gMMrWhs/file-1193.png";
         const BANNER_SRC = "https://i.ibb.co.com/NdkQLH21/file-1194.png";
 
@@ -641,7 +362,6 @@
         });
 
         let completedTasks = { 1: false, 2: false, 3: false };
-
         function completeTask(taskNum) {
             completedTasks[taskNum] = true;
             document.querySelectorAll('.task-item')[taskNum - 1].classList.add('completed');
@@ -662,6 +382,13 @@
             }
         }
 
+        function switchSubTab(tabId, element) {
+            document.querySelectorAll('.sub-tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).style.display = 'block';
+            element.classList.add('active');
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyDSftuyANybsSrzM7M8mvLJrd8-HhEn1BU",
             authDomain: "prindapan-games.firebaseapp.com",
@@ -675,19 +402,12 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        /* FIREBASE REALTIME BROADCAST LISTENER */
-        let popupTimeout;
-        let lastTimestamp = 0;
-
+        // REALTIME BROADCAST LISTENER
+        let popupTimeout, lastTimestamp = 0;
         db.ref('liveBroadcast').on('value', (snapshot) => {
             const data = snapshot.val();
             if (!data || !data.text) return;
-
-            if (lastTimestamp === 0) {
-                lastTimestamp = data.timestamp || 1;
-                return;
-            }
-
+            if (lastTimestamp === 0) { lastTimestamp = data.timestamp || 1; return; }
             if (data.timestamp && data.timestamp > lastTimestamp) {
                 lastTimestamp = data.timestamp;
                 showLivePopup(data.text);
@@ -697,40 +417,29 @@
         function showLivePopup(text) {
             const popup = document.getElementById('livePopup');
             document.getElementById('livePopupText').innerText = text;
-            
             popup.classList.add('show');
-
             clearTimeout(popupTimeout);
-            popupTimeout = setTimeout(() => {
-                closeLivePopup();
-            }, 10000);
+            popupTimeout = setTimeout(() => closeLivePopup(), 10000);
         }
+        function closeLivePopup() { document.getElementById('livePopup').classList.remove('show'); }
 
-        function closeLivePopup() {
-            document.getElementById('livePopup').classList.remove('show');
-        }
-
-        /* FIREBASE LINK MANAGEMENT */
+        // FETCH VAULT DATA
         db.ref('links').on('value', (snapshot) => {
             const grid = document.getElementById('cardGrid');
             grid.innerHTML = '';
             const data = snapshot.val();
-            
             if(!data) {
                 grid.innerHTML = '<p style="text-align:center; color: var(--text-gray); font-size:0.8rem; padding: 10px;">Belum ada link yang ditambahkan.</p>';
                 return;
             }
-
             for (let id in data) {
                 const item = data[id];
                 grid.innerHTML += `
                     <div class="large-card" data-title="${item.title.toLowerCase()}">
-                        <div class="card-banner-wrapper">
-                            <img src="${item.img || BANNER_SRC}" class="card-banner-img" alt="Thumbnail">
-                        </div>
+                        <div class="card-banner-wrapper"><img src="${item.img || BANNER_SRC}" class="card-banner-img"></div>
                         <div class="card-body">
                             <div class="card-title">${item.title}</div>
-                            <a href="${item.url}" target="_blank" class="btn-action">AMBIL DATA </a>
+                            <a href="${item.url}" target="_blank" class="btn-action">AMBIL DATA</a>
                         </div>
                     </div>
                 `;
@@ -743,6 +452,100 @@
                 const title = card.getAttribute('data-title');
                 card.style.display = title.includes(input) ? 'flex' : 'none';
             });
+        }
+
+        // RATING & FEEDBACK SYSTEM
+        let selectedRating = 0;
+        function setRating(rating) {
+            selectedRating = rating;
+            const stars = document.querySelectorAll('#starContainer i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function sendRatingAndFeedback() {
+            const feedback = document.getElementById('feedbackText').value.trim();
+            if (selectedRating === 0) {
+                alert('Silakan pilih rating bintang terlebih dahulu!');
+                return;
+            }
+            db.ref('ratings').push({
+                stars: selectedRating,
+                feedback: feedback || "Tanpa masukan",
+                timestamp: Date.now()
+            });
+            alert('Terima kasih atas rating dan saran kamu!');
+            setRating(0);
+            document.getElementById('feedbackText').value = '';
+        }
+
+        // LIVE CHAT & ONLINE COUNTER SYSTEM
+        let currentUserNickname = "";
+        let userPresenceRef = null;
+
+        function joinChat() {
+            const nick = document.getElementById('chatNickname').value.trim();
+            if (!nick) {
+                alert('Masukkan nama panggilan dulu, bre!');
+                return;
+            }
+            currentUserNickname = nick;
+            document.getElementById('chatLogin').style.display = 'none';
+            document.getElementById('chatInterface').style.display = 'block';
+
+            // PRESENCE INDICATOR (ONLINE USER COUNT)
+            userPresenceRef = db.ref('presence').push();
+            userPresenceRef.set(true);
+            userPresenceRef.onDisconnect().remove();
+
+            db.ref('presence').on('value', (snapshot) => {
+                const count = snapshot.numChildren();
+                document.getElementById('onlineUsers').innerText = count || 1;
+            });
+
+            // REALTIME CHAT MESSAGES
+            db.ref('chatMessages').limitToLast(50).on('value', (snapshot) => {
+                const chatBox = document.getElementById('chatBox');
+                chatBox.innerHTML = '';
+                const messages = snapshot.val();
+                if (messages) {
+                    for (let key in messages) {
+                        const msg = messages[key];
+                        chatBox.innerHTML += `
+                            <div class="chat-msg">
+                                <span class="username">${escapeHtml(msg.user)}:</span> ${escapeHtml(msg.text)}
+                            </div>
+                        `;
+                    }
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            });
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInputMessage');
+            const msg = input.value.trim();
+            if (!msg || !currentUserNickname) return;
+
+            db.ref('chatMessages').push({
+                user: currentUserNickname,
+                text: msg,
+                timestamp: Date.now()
+            });
+            input.value = '';
+        }
+
+        function handleChatEnter(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
