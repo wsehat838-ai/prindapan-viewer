@@ -15,6 +15,7 @@
             --accent-purple: #8a2be2;
             --accent-blue: #00d2ff;
             --text-gray: #a49bba;
+            --success-green: #00e676;
         }
 
         * {
@@ -36,8 +37,27 @@
             overflow-x: hidden;
         }
 
-        /* LOADING SCREEN */
-        #loading-screen {
+        /* PAGE SYSTEM MANAGEMENT */
+        .page-view {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            flex-direction: column;
+            gap: 15px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page-view.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---------------- PAGE 1: LOADING SCREEN ---------------- */
+        #page1-loading {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark);
@@ -47,71 +67,69 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-            transition: opacity 0.5s ease;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--card-border);
-            border-top: 5px solid var(--accent-pink);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* BROADCAST POPUP */
-        #live-broadcast {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            width: 90%;
-            max-width: 440px;
-            background: linear-gradient(135deg, rgba(255, 0, 119, 0.95), rgba(138, 43, 226, 0.95));
-            border: 1px solid #fff;
-            box-shadow: 0 0 20px rgba(255, 0, 119, 0.6);
-            border-radius: 12px;
-            padding: 12px 16px;
-            z-index: 999;
+        .spinner-outer {
+            position: relative;
+            width: 130px;
+            height: 130px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            justify-content: center;
         }
 
-        #live-broadcast.show {
-            transform: translateX(-50%) translateY(0);
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid var(--card-border);
+            border-top: 4px solid var(--accent-pink);
+            border-right: 4px solid var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
-        .broadcast-icon {
-            font-size: 1.5rem;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner-logo {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
             color: #fff;
-            animation: pulse 1.5s infinite;
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 119, 0.6);
+            z-index: 2;
         }
 
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .loading-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
 
-        .broadcast-text {
-            font-size: 0.8rem;
-            color: #fff;
+        .loading-sub {
+            font-size: 0.75rem;
+            color: var(--text-gray);
             font-weight: 600;
         }
 
-        /* MAIN CONTAINER */
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        /* BANNER */
+        /* ---------------- COMMON UI (BANNER) ---------------- */
         .banner-card {
             width: 100%;
-            height: 140px;
+            height: 130px;
             background: linear-gradient(135deg, #130a24 0%, #261547 50%, #ff0077 100%);
             border-radius: 16px;
             border: 1px solid var(--card-border);
@@ -161,7 +179,6 @@
             font-weight: 600;
         }
 
-        /* CARD COMMON */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -184,6 +201,106 @@
 
         .card-title i { color: var(--accent-pink); }
 
+        /* ---------------- PAGE 2: TASK SYSTEM ---------------- */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-item {
+            background: #090412;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-icon {
+            font-size: 1.3rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .task-icon.yt { color: #ff0000; }
+        .task-icon.wa { color: #25d366; }
+
+        .task-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-text strong {
+            font-size: 0.8rem;
+            color: #fff;
+        }
+
+        .task-text span {
+            font-size: 0.68rem;
+            color: var(--text-gray);
+        }
+
+        .btn-task {
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-task.done {
+            background: rgba(0, 230, 118, 0.15);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+            cursor: default;
+        }
+
+        .btn-next-gate {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            background: #1f1438;
+            border: 1px solid var(--card-border);
+            color: var(--text-gray);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: not-allowed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .btn-next-gate.unlocked {
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue));
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 119, 0.4);
+        }
+
+        /* ---------------- PAGE 3: VAULT LINKS ---------------- */
         .search-box {
             position: relative;
             width: 100%;
@@ -255,83 +372,26 @@
             gap: 5px;
             font-family: 'Orbitron', sans-serif;
         }
-
-        /* ACTION BUTTONS */
-        .btn-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn-action {
-            padding: 12px;
-            border-radius: 10px;
-            background: #090412;
-            border: 1px solid var(--card-border);
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-action.yt { border-color: #ff0000; color: #ff0000; }
-        .btn-action.wa { border-color: #25d366; color: #25d366; }
-        .btn-action.full { grid-column: span 2; border-color: var(--accent-blue); color: var(--accent-blue); }
-
-        /* TASK SECTION */
-        .task-item {
-            background: #090412;
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .task-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .task-info strong { font-size: 0.8rem; }
-        .task-info span { font-size: 0.7rem; color: var(--text-gray); }
-
-        .btn-task {
-            background: var(--accent-blue);
-            color: #000;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
 
-    <!-- LOADING SCREEN -->
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <div style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--accent-pink);">PRINDAPAN VAULT...</div>
+    <!-- PAGE 1: SPLASH LOADING SCREEN -->
+    <div id="page1-loading">
+        <div class="spinner-outer">
+            <div class="spinner-ring"></div>
+            <div class="spinner-logo">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+        </div>
+        <div class="loading-title">PRINDAPAN VAULT</div>
+        <div class="loading-sub">Mempersiapkan Akses Hub...</div>
     </div>
 
-    <!-- POPUP LIVE BROADCAST -->
-    <div id="live-broadcast">
-        <i class="fa-solid fa-bullhorn broadcast-icon"></i>
-        <div class="broadcast-text" id="broadcastText">Pesan broadcast dari Admin akan tampil di sini!</div>
-    </div>
-
-    <div class="app-container">
-
-        <!-- BANNER & LOGO INTERNAL (ANTI BROKEN) -->
+    <!-- PAGE 2: TASK GATEKEEPER SYSTEM -->
+    <div id="page2-tasks" class="page-view">
+        
+        <!-- BANNER ATAS -->
         <div class="banner-card">
             <div class="banner-logo">
                 <i class="fa-solid fa-gamepad"></i>
@@ -342,7 +402,78 @@
             </div>
         </div>
 
-        <!-- DOWNLOAD VAULT CARD -->
+        <!-- LIST TUGAS -->
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> TASK REWARD & TUGAS</div>
+            <p style="font-size: 0.72rem; color: var(--text-gray);">Selesaikan 3 tugas di bawah ini untuk membuka halaman vault link download:</p>
+            
+            <div class="task-list">
+                <!-- TASK 1 -->
+                <div class="task-item">
+                    <div class="task-left">
+                        <i class="fa-brands fa-youtube task-icon yt"></i>
+                        <div class="task-text">
+                            <strong>Subscribe YouTube</strong>
+                            <span>Channel Official Prindapan</span>
+                        </div>
+                    </div>
+                    <a id="btnTask1" href="https://youtube.com/@prindapan_ori?si=xoFVHlqqjgSZEkbu" target="_blank" class="btn-task" onclick="completeTask(1)">
+                        <i class="fa-solid fa-external-link-alt"></i> SELESAIKAN
+                    </a>
+                </div>
+
+                <!-- TASK 2 -->
+                <div class="task-item">
+                    <div class="task-left">
+                        <i class="fa-brands fa-youtube task-icon yt"></i>
+                        <div class="task-text">
+                            <strong>Like + Comment Video</strong>
+                            <span>Video Terbaru Prindapan</span>
+                        </div>
+                    </div>
+                    <a id="btnTask2" href="https://youtu.be/2Xhiu_JNAUs?si=uYE6VS120yJ24oNE" target="_blank" class="btn-task" onclick="completeTask(2)">
+                        <i class="fa-solid fa-external-link-alt"></i> SELESAIKAN
+                    </a>
+                </div>
+
+                <!-- TASK 3 -->
+                <div class="task-item">
+                    <div class="task-left">
+                        <i class="fa-brands fa-whatsapp task-icon wa"></i>
+                        <div class="task-text">
+                            <strong>Komunitas WA</strong>
+                            <span>Gabung Grup Whatsapp</span>
+                        </div>
+                    </div>
+                    <a id="btnTask3" href="https://chat.whatsapp.com/EgMhbyhvTyxFvEs0h3EIok" target="_blank" class="btn-task" onclick="completeTask(3)">
+                        <i class="fa-solid fa-external-link-alt"></i> JOIN NOW
+                    </a>
+                </div>
+            </div>
+
+            <!-- TOMBOL MASUK KETIKA SEMUA SELESAI -->
+            <button id="btnGateNext" class="btn-next-gate" disabled onclick="goToPage3()">
+                <i class="fa-solid fa-lock"></i> SELESAIKAN SEMUA TASK DAHULU
+            </button>
+        </div>
+
+    </div>
+
+    <!-- PAGE 3: MAIN VAULT LINK LIST -->
+    <div id="page3-vault" class="page-view">
+        
+        <!-- BANNER ATAS PAGE 3 -->
+        <div class="banner-card">
+            <div class="banner-logo">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div class="banner-info">
+                <div class="banner-title">PRINDAPAN VAULT</div>
+                <div class="banner-sub"><i class="fa-solid fa-circle" style="color:#25d366; font-size: 0.6rem;"></i> HUB FILE & SCRIPT OFFICIAL</div>
+            </div>
+        </div>
+
+        <!-- DOWNLOAD VAULT -->
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-folder-open"></i> DOWNLOAD VAULT</div>
             
@@ -352,48 +483,17 @@
             </div>
 
             <div id="linkList" style="display: flex; flex-direction: column; gap: 8px;">
-                <p style="font-size:0.75rem; color: var(--text-gray); text-align:center;">Memuat data...</p>
+                <p style="font-size:0.75rem; color: var(--text-gray); text-align:center;">Memuat data link...</p>
             </div>
-        </div>
-
-        <!-- MENU TASK / TUGAS -->
-        <div class="card">
-            <div class="card-title"><i class="fa-solid fa-list-check"></i> TASK REWARD & TUGAS</div>
-            <div class="task-item">
-                <div class="task-info">
-                    <strong>Subscribe Channel YouTube</strong>
-                    <span>Dapatkan akses ke fitur khusus</span>
-                </div>
-                <a href="https://youtube.com" target="_blank" class="btn-task">SELESAIKAN</a>
-            </div>
-            <div class="task-item">
-                <div class="task-info">
-                    <strong>Join Group Whatsapp</strong>
-                    <span>Gabung komunitas Prindapan</span>
-                </div>
-                <a href="https://chat.whatsapp.com" target="_blank" class="btn-task">JOIN NOW</a>
-            </div>
-        </div>
-
-        <!-- SHORTCUT LINK BUTTONS -->
-        <div class="btn-grid">
-            <a href="https://youtube.com" target="_blank" class="btn-action yt">
-                <i class="fa-brands fa-youtube"></i> YouTube
-            </a>
-            <a href="https://chat.whatsapp.com" target="_blank" class="btn-action wa">
-                <i class="fa-brands fa-whatsapp"></i> Komunitas WA
-            </a>
-            <a href="https://wa.me/62800000000" target="_blank" class="btn-action full">
-                <i class="fa-solid fa-headset"></i> HUBUNGI ADMIN
-            </a>
         </div>
 
     </div>
 
-    <!-- FIREBASE DB -->
+    <!-- FIREBASE CLIENT SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
+        // CONFIG FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyDSftuyANybsSrzM7M8mvLJrd8-HhEn1BU",
             authDomain: "prindapan-games.firebaseapp.com",
@@ -408,17 +508,52 @@
         const db = firebase.database();
 
         let allLinks = [];
+        let tasksDone = { 1: false, 2: false, 3: false };
 
-        // HIDE LOADING SCREEN
+        // OTOMATIS BERPINDAH DARI PAGE 1 KE PAGE 2 (AFTER LOADING)
         window.addEventListener('load', () => {
             setTimeout(() => {
-                const loader = document.getElementById('loading-screen');
+                const loader = document.getElementById('page1-loading');
                 loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 500);
-            }, 800);
+                loader.style.transition = 'opacity 0.4s ease';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    document.getElementById('page2-tasks').classList.add('active');
+                }, 400);
+            }, 1800);
         });
 
-        // LISTEN TO FIREBASE LINKS
+        // TUGAS CHECKING SYSTEM
+        function completeTask(taskNum) {
+            setTimeout(() => {
+                tasksDone[taskNum] = true;
+                const btn = document.getElementById(`btnTask${taskNum}`);
+                btn.className = "btn-task done";
+                btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> SELESAI';
+                btn.removeAttribute('href');
+                btn.removeAttribute('target');
+                btn.onclick = null;
+
+                checkAllTasks();
+            }, 1000);
+        }
+
+        function checkAllTasks() {
+            if (tasksDone[1] && tasksDone[2] && tasksDone[3]) {
+                const gateBtn = document.getElementById('btnGateNext');
+                gateBtn.className = "btn-next-gate unlocked";
+                gateBtn.disabled = false;
+                gateBtn.innerHTML = '<i class="fa-solid fa-unlock"></i> LANJUT KE VAULT LINK <i class="fa-solid fa-arrow-right"></i>';
+            }
+        }
+
+        function goToPage3() {
+            document.getElementById('page2-tasks').classList.remove('active');
+            document.getElementById('page3-vault').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // FIREBASE LINK LIST REALTIME
         db.ref('links').on('value', (snapshot) => {
             const data = snapshot.val();
             allLinks = [];
@@ -460,22 +595,6 @@
             const filtered = allLinks.filter(l => l.title.toLowerCase().includes(query));
             renderLinks(filtered);
         }
-
-        // LISTEN TO REALTIME BROADCAST LIVE CHAT FROM ADMIN
-        let lastBroadcastTime = 0;
-        db.ref('liveBroadcast').on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.timestamp > lastBroadcastTime) {
-                lastBroadcastTime = data.timestamp;
-                const broadcastEl = document.getElementById('live-broadcast');
-                document.getElementById('broadcastText').innerText = data.text;
-                
-                broadcastEl.classList.add('show');
-                setTimeout(() => {
-                    broadcastEl.classList.remove('show');
-                }, 10000); // Tampil selama 10 Detik
-            }
-        });
     </script>
 </body>
 </html>
